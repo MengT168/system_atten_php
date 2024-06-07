@@ -2,6 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
 require("./connect.php");
+
 $op="";
 $id="";
 global $conn;
@@ -34,6 +35,29 @@ if ($op == 'del') {
        }
     else
         $msg = "Delete Error: " . mysqli_error($conn);
+}
+
+if ($op == 'del1') {
+  $del = "DELETE FROM program_tbl WHERE StudentID=$id";
+  
+  $exec = mysqli_query($conn, $del);
+  if ($exec)
+     {
+      echo '
+      <script>
+      $(document).ready(function(){
+          swal({
+              title: "Success!",
+              text: "Detete Success",
+              icon: "success",
+              button: "Done",
+          });
+      });
+      </script>
+      ';
+     }
+  else
+      $msg = "Delete Error: " . mysqli_error($conn);
 }
 
 
@@ -143,6 +167,21 @@ if (isset($_POST['btn_save'])) {
         this.value = formattedDate;
     });
 </script>
+<script>
+        function updateMajorList(facultytxt) {
+            $.ajax({
+                url: 'FetchFacul_listStu.php',
+                type: 'POST',
+                data: { facultyID: facultytxt },
+                success: function(response) {
+                    $('select[name="majortxt"]').html(response);
+                },
+                error: function() {
+                    alert('Error fetching majors');
+                }
+            });
+        }
+    </script>
 
 <main id="main" class="main">
 
@@ -196,17 +235,59 @@ if (isset($_POST['btn_save'])) {
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
             </li>
+            <?php
+                          $conn = mysqli_connect("localhost","root","","demo_db");
+                          
+                            $sql = "SELECT StudentID FROM familybackground_tbl WHERE StudentID = '$id'";
+                            $exec=mysqli_query($conn, $sql);
+                          $count=mysqli_num_rows($exec);
 
+                          if($count>0){
+                echo '';
+                          }else{
+                            ?>
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Family Background</button>
             </li>
-
+            <?php } ?>
             <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Family Background View</button>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Family Background</button>
             </li>
             <li class="nav-item">
               <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-passwor">Edit Family Background</button>
             </li>
+            <!-- <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-setting">Program</button>
+            </li> -->
+            <!-- <?php
+                    $conn = mysqli_connect("localhost", "root", "", "demo_db");
+
+                    // Assuming $id is the student ID you want to check
+                    $id = mysqli_real_escape_string($conn, $id); // Sanitize the input to prevent SQL injection
+
+                    $sql = "SELECT StudentID FROM educationalbackground_tbl WHERE StudentID = '$id' UNION SELECT StudentID FROM studentstatus_tbl WHERE StudentID = '$id'";
+                    $exec = mysqli_query($conn, $sql);
+                    $count = mysqli_num_rows($exec);
+
+                    if ($count > 0) {
+                        // Student with the given ID exists
+                        echo '';
+                    } else {
+                        // Student with the given ID does not exist
+                        ?>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settin">Student Status</button>
+                        </li>
+                <?php } ?> -->
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-set">Status View</button>
+            </li>
+            <!-- <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">Manage Status</button>
+            </li> -->
+            <!-- <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pr">Manage Educational Background</button>
+            </li> -->
 
           </ul>
           <div class="tab-content pt-2">
@@ -217,7 +298,7 @@ if (isset($_POST['btn_save'])) {
 
               <h5 class="card-title">Profile Details</h5>
                 <?php
-                //  $Id = $_SESSION['id'];
+               
                 
              $sql="SELECT StudentID , NameInKhmer , NameInLatin , FamilyName , GivenName , SexKH , SexEN , IDPassportNo , NationalityKH , NationalityEN , CountryKH , CountryEN , DOB , POB , PhoneNumber , Email , CurrentAddress , CurrentAddressPP , RegisterDate  FROM `studentinfo_tbl` 
              INNER JOIN sex_tbl on studentinfo_tbl.SexID = sex_tbl.SexID
@@ -463,12 +544,12 @@ if (isset($_POST['btn_save'])) {
                           <?php
                           $conn = mysqli_connect("localhost","root","","demo_db");
                           
-                            $sql = "SELECT StudentID FROM familybackground_tbl WHERE StudentID = '$id'";
+                            $sql = "SELECT StudentID FROM familybackground_tbl  WHERE StudentID = '$id'";
                             $exec=mysqli_query($conn, $sql);
                           $count=mysqli_num_rows($exec);
 
                           if($count>0){
-                echo '<div class="tab-pane fade pt-3" id="profile-settings">Data already created</div>';
+                echo '<div class="tab-pane fade pt-3"  id="profile-settings">Data already created</div>';
                           }else{
                           ?>
                           
@@ -548,6 +629,7 @@ if (isset($_POST['btn_save'])) {
     <?php getOccupation();  ?>
     </select>
 </div>
+</div>
 <div class="row mb-3">
   <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Family Currentaddress</label>
   <div class="col-md-8 col-lg-9">
@@ -581,11 +663,10 @@ if (isset($_POST['btn_save'])) {
 
             </div>
             <?php } ?>
-
-            <div class="tab-pane fade pt-3" id="profile-change-password">
-            <h5 class="card-title">Profile Details</h5>
+            <!-- Family Background View -->
+            <div class="tab-pane fade show  profile-overview"id="profile-change-password">
+            <h5 class="card-title">Family Background Details</h5>
                 <?php
-                //  $Id = $_SESSION['id'];
                 
              $sql="SELECT * FROM familybackground_tbl
              INNER JOIN country_tbl on familybackground_tbl.FatherCountryID = country_tbl.CountryID
@@ -693,6 +774,7 @@ if (isset($_POST['btn_save'])) {
               </div>
               <?php } ?>       
             </div>
+            <!-- Update Family Background -->
             <div class="tab-pane fade pt-3" id="profile-change-passwor">
               <!-- Update Family Background -->
               <?php
@@ -883,8 +965,536 @@ if (isset($_POST['btn_save'])) {
               </form><!-- End Change Password Form -->
 
             </div>
+            <!-- Program -->
+            <?php require("Function2.php"); ?>
+            <!-- <div class="tab-pane fade pt-3" id="profile-setting">
 
-          </div><!-- End Bordered Tabs -->
+            <form method="post" enctype="multipart/form-data" >
+
+            <div class="row mb-3">
+  <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Faculty</label>
+  <div class="col-md-8 col-lg-9">
+    <select class="form-select" name="facultytxt" id="" onchange="updateMajorList(this.value)" >
+    <option value="">
+      Select One
+    </option>
+        <?php getFaculty(); ?>
+    </select>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Major</label>
+  <div class="col-md-8 col-lg-9">
+  <select name="majortxt" class="form-select" id="">
+  
+    </select>
+  </div>
+</div>
+
+
+<div class="row mb-3">
+  <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Year</label>
+  <div class="col-md-8 col-lg-9">
+    <select class="form-select" name="yeartxt" id="">
+    <option value="">
+      Select One
+    </option>
+        <?php getYear(); ?>
+    </select>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Semester</label>
+  <div class="col-md-8 col-lg-9">
+  <select class="form-select" name="semestertxt" id="">
+  <option value="">
+      Select One
+    </option>
+        <?php getSemester(); ?>
+    </select>
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Shift</label>
+  <div class="col-md-8 col-lg-9">
+    <select name="shifttxt" class="form-select" id="">
+    <option value="">
+      Select One
+    </option>
+    <?php getShift();  ?>
+    </select>
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Degree</label>
+  <div class="col-md-8 col-lg-9">
+    <select name="degreetxt" class="form-select" id="">
+    <option value="">
+      Select One
+    </option>
+    <?php getDegree();  ?>
+    </select>
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">AcademicYear</label>
+  <div class="col-md-8 col-lg-9">
+    <select name="academictxt" class="form-select" id="">
+    <option value="">
+      Select One
+    </option>
+    <?php getAcad();  ?>
+    </select>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Batch</label>
+  <div class="col-md-8 col-lg-9">
+  <select name="batchtxt" class="form-select" id="">
+  <option value="">
+      Select One
+    </option>
+    <?php getBatch();  ?>
+    </select>
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Campus</label>
+  <div class="col-md-8 col-lg-9">
+    <select name="campustxt" class="form-select" id="">
+    <option value="">
+      Select One
+    </option>
+    <?php getCampus();  ?>
+    </select>
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Start Date</label>
+  <div class="col-md-8 col-lg-9">
+  <input
+                      type="date"
+                      class="form-control"
+                      name="startdatetxt"
+                      id="dateInput"
+                    />
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">End Date</label>
+  <div class="col-md-8 col-lg-9">
+  <input
+                      type="date"
+                      class="form-control"
+                      name="enddatetxt"
+                      id="dateInput"
+                    />
+</div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Date Issue</label>
+  <div class="col-md-8 col-lg-9">
+  <input
+                      type="date"
+                      class="form-control"
+                      name="dateissuetxt"
+                      id="dateInput"
+                    />
+  </div>
+</div>
+
+<div class="text-center">
+  <button type="submit" class="btn btn-primary" name="btn_add_pro" >Add</button>
+</div>
+</form>
+
+            </div> -->
+
+            <!-- Student Status -->
+            <div class="tab-pane fade pt-3" id="profile-settin">
+
+            <form method="post" enctype="multipart/form-data" >
+
+<div class="row mb-3">
+  <h6 style="text-align: center;" >Educational Background</h6>
+  <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">School Type</label>
+  <div class="col-md-8 col-lg-9">
+    <select class="form-select" name="schooltype" id="">
+    <option value="">
+      Select One
+    </option>
+        <?php getSchoolType(); ?>
+    </select>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">School Name</label>
+  <div class="col-md-8 col-lg-9">
+  <input type="text" name="schoolnametxt" class="form-control" >
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Academic Year</label>
+  <div class="col-md-8 col-lg-9">
+  <input type="text" name="academicyear" class="form-control" >
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Province</label>
+  <div class="col-md-8 col-lg-9">
+  <input type="text" name="province" class="form-control" >
+  </div>
+</div>
+<h6 style="text-align: center;" >Program</h6>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Program</label>
+  <div class="col-md-8 col-lg-9">
+  <select name="programtxt" class="form-select" id="">
+  <option value="">
+      Select One
+    </option>
+    <?php getProgram();  ?>
+    </select>
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Assigne</label>
+  <div class="col-md-8 col-lg-9">
+  <input type="text" name="assignetxt" class="form-control" >
+  </div>
+</div>
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Note</label>
+  <div class="col-md-8 col-lg-9">
+  <input type="text" name="notetxt" class="form-control" >
+  </div>
+</div>
+
+<div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Assign Date</label>
+  <div class="col-md-8 col-lg-9">
+  <input type="date" name="assigndate" id="dateInput" class="form-control" >
+  </div>
+</div>
+
+
+
+
+<div class="text-center">
+  <button type="submit" class="btn btn-primary" name="btn_add_status" >Add</button>
+</div>
+</form>
+
+</div>
+
+           
+
+            
+            <!-- Student Status View -->
+            <div class="tab-pane fade show  profile-overview" id="profile-set">            
+              <!-- <h5 class="card-title">About</h5>
+              <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p> -->
+
+              <div><h4 style="text-align: center;" >Student Status</h4></div>
+                <?php
+               
+                
+               $sql1="SELECT * FROM `studentstatus_tbl` 
+               INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
+               INNER JOIN program_tbl ON studentstatus_tbl.ProgramID = program_tbl.ProgramID
+               INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
+               INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
+               INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
+               INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
+               INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.AcademicYearID
+               INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
+               INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
+               INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
+               INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID WHERE studentstatus_tbl.StudentID  = $id";
+             $rs=$conn->query($sql1);
+                    while($rw = mysqli_fetch_assoc($rs)){
+                ?>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label ">Program ID</div>
+                <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['ProgramID'] ?></h6></div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Faculty</div>
+                <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['FacultyEN'] ?></h6></div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Major</div>
+                <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['MajorEN'] ?></h6></div>
+              </div>
+
+              <div class="row">
+              <div class="col-lg-3 col-md-4 label">Year</div>
+                <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['YearEN'] ?></h6></div>
+              </div>
+              
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Semester</div>
+                <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['SemesterEN'] ?></h6></div>
+              </div>
+              
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Shift</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['ShiftEN'] ?></h6></div>
+              </div>
+
+                    
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Degree</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['DegreeNameEN'] ?></h6></div>
+              </div>
+
+
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Academic Year</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['AcademicYear'] ?></h6></div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Batch</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['BatchEN'] ?></h6></div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Campus</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['CampusEN'] ?></h6></div>
+              </div>
+     <div class="row">
+         <div class="col-lg-3 col-md-4 label ">Assigned</div>
+         <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['Assigned'] ?></h6></div>
+       </div>
+
+       <div class="row">
+         <div class="col-lg-3 col-md-4 label">Note</div>
+         <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['Note'] ?></h6></div>
+       </div>
+
+       <div class="row">
+         <div class="col-lg-3 col-md-4 label">AssignDate</div>
+         <div class="col-lg-9 col-md-8 A" ><h6><?php echo $rw['AssignDate'] ?></h6></div>
+       </div>
+         
+              <?php } ?>
+              <?php
+                $sql = "SELECT * FROM educationalbackground_tbl
+                INNER JOIN schooltype_tbl on educationalbackground_tbl.SchoolTypeID = schooltype_tbl.SchoolTypeID
+                WHERE StudentID = $id";
+                $rs= $conn->query($sql);
+                while($row=mysqli_fetch_assoc($rs)){
+              ?>
+              <div><h4 style="text-align: center;" >Educational Background</h4></div>
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">High School Name</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $row['NameSchool'] ?></h6></div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">High School Type</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $row['SchoolTypeEN'] ?></h6></div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">Academic Year</div>
+                <div class="col-lg-9 col-md-8"><h6><?php echo $row['AcademicYear'] ?></h6></div>
+              </div>
+               <?php } ?>
+            </div>
+            
+           <!-- Manage Program -->
+           <div class="tab-pane fade pt-3" id="profile">
+            <h4 style="text-align: center;" >Manage Student Status</h4>
+                  <?php 
+                    $sql="SELECT * FROM `studentstatus_tbl` 
+                    WHERE studentstatus_tbl.StudentID = $id";
+                    $rs=$conn->query($sql);
+                    while($row=mysqli_fetch_assoc($rs)){
+                      
+                  ?>
+           <form method="post" enctype="multipart/form-data" >
+
+      <div class="row mb-3">
+  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Program</label>
+  <div class="col-md-8 col-lg-9">
+    <select name="facultytxt" id="" class="form-select">
+      <?php
+      $sql = "SELECT * FROM program_tbl 
+      INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
+      INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
+      INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
+      INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
+      INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.AcademicYearID
+      INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
+      INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
+      INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
+      INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID";
+      $exec = mysqli_query($conn, $sql);
+      while ($rw = mysqli_fetch_array($exec)) {
+        $selected = ($rw['ProgramID'] == $row['ProgramID']) ? "selected" : "";
+        ?>
+        <option value="<?php echo $rw['ProgramID']; ?>" <?php echo $selected; ?>>
+          <?php echo $rw['YearEN'].'-'.$rw['SemesterEN'].'-'.$rw['MajorEN'].'-'.$rw['BatchEN'].'-'.$rw['CampusEN'].'-'.$rw['DegreeNameEN'].'-'.$rw['ShiftEN'].'-'.$rw['AcademicYear']; ?>
+        </option>
+      <?php
+      }
+      ?>
+    </select>
+  </div>
+</div>
+
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Assign</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="programidtxt"  type="text" class="form-control" id="Facebook" value="<?php echo $row['Assigned'] ?>">
+                  </div>
+      </div>
+
+         <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Note</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="programidtxt"  type="text" class="form-control" id="Facebook" value="<?php echo $row['Note'] ?>">
+      </div>
+      </div>
+
+         <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">AssignDate</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="programidtxt"  type="date" class="form-control" id="dateInput" value="<?php echo $row['AssignDate'] ?>">
+      </div>
+      <?php } ?>
+      <h4 style="text-align: center; margin-top: 50px; " >Manage Student Educational Background</h4>
+                  <?php 
+                    $sql="SELECT * FROM educationalbackground_tbl WHERE StudentID = $id";
+                    $rs=$conn->query($sql);
+                    while($row=mysqli_fetch_assoc($rs)){
+                      
+                  ?>
+
+<div class="row mb-3">
+                  <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Educational ID</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="educationalid" readonly type="text" class="form-control" id="Facebook" value="<?php echo $row['EducationalBackgroundID'] ?>">
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">School Type</label>
+                  <div class="col-md-8 col-lg-9">
+                  <select name="schooltytxt" id="" class="form-select" >
+                                   <?php
+                                    $sql="SELECT * FROM schooltype_tbl ORDER BY SchoolTypeID";
+                                    $exec=mysqli_query($conn,$sql);
+                                    while($rw=mysqli_fetch_array($exec)){
+                                    ?>
+                                        <option value="<?php echo $rw['SchoolTypeID'];?>" 
+                                            <?php if($rw['SchoolTypeID']==$row['SchoolTypeID']) echo "selected";?>>
+                                            
+                                            <?php echo $rw['SchoolTypeEN']?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                   </select>
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">School Name</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="schoolnametxt"  type="text" class="form-control" id="Facebook" value="<?php echo $row['NameSchool'] ?>">
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Academic Year</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="academictxt"  type="text" class="form-control" id="Facebook" value="<?php echo $row['AcademicYear'] ?>">
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">City/Province</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="cityprovince"  type="text" class="form-control" id="Facebook" value="<?php echo $row['Province'] ?>">
+                  </div>
+      </div>
+      <?php } ?>
+      
+      <div class="text-center">
+                  <button type="submit" name="btn_up_pro" class="btn btn-primary">Save Changes</button>
+                </div>
+      </form>
+      
+         
+          </div>
+
+          <!-- Manage Educational -->
+          <!-- <div class="tab-pane fade pt-3" id="pr">
+            <h4 style="text-align: center;" >Manage Student Educational Background</h4>
+                  <?php 
+                    $sql="SELECT * FROM educationalbackground_tbl WHERE StudentID = $id";
+                    $rs=$conn->query($sql);
+                    while($row=mysqli_fetch_assoc($rs)){
+                      
+                  ?>
+           <form method="post" enctype="multipart/form-data" >
+      <div class="row mb-3">
+                  <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Educational ID</label>
+                  <div class="col-md-8 col-lg-9">
+                    <input name="educationalid" readonly type="text" class="form-control" id="Facebook" value="<?php echo $row['EducationalBackgroundID'] ?>">
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">School Type</label>
+                  <div class="col-md-8 col-lg-9">
+                  <select name="schooltytxt" id="" class="form-select" >
+                                   <?php
+                                    $sql="SELECT * FROM schooltype_tbl ORDER BY SchoolTypeID";
+                                    $exec=mysqli_query($conn,$sql);
+                                    while($rw=mysqli_fetch_array($exec)){
+                                    ?>
+                                        <option value="<?php echo $rw['SchoolTypeID'];?>" 
+                                            <?php if($rw['SchoolTypeID']==$row['SchoolTypeID']) echo "selected";?>>
+                                            
+                                            <?php echo $rw['SchoolTypeEN']?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                   </select>
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">School Name</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="schoolnametxt"  type="text" class="form-control" id="Facebook" value="<?php echo $row['NameSchool'] ?>">
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Academic Year</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="academictxt"  type="text" class="form-control" id="Facebook" value="<?php echo $row['AcademicYear'] ?>">
+                  </div>
+      </div>
+      <div class="row mb-3">
+                  <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">City/Province</label>
+                  <div class="col-md-8 col-lg-9">
+                  <input name="cityprovince"  type="text" class="form-control" id="Facebook" value="<?php echo $row['Province'] ?>">
+                  </div>
+      </div>
+      <div class="text-center">
+                  <button type="submit" name="btn_up_edu" class="btn btn-primary">Save Changes</button>
+                </div>
+      </form>
+      <?php } ?>
+         
+          </div> -->
+            
+          </div>
 
         </div>
       </div>
@@ -1058,6 +1668,180 @@ else {
 
 
 <main id="main" class="main">
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Create
+</button>
+<?php
+  include("Function.php");
+?>
+<!-- Modal -->
+<div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content"   >
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form class="row g-3" method="post" enctype="multipart/form-data" >
+                  <div class="col-12">
+                    <label  class="form-label"
+                      >Name In Khmer</label
+                    >
+                    <input type="text" class="form-control" name="namekhmer_txt" />
+                  </div>
+                 
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Name In Latin</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="namelatin_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Family Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="familyname_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Given Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="givenname_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Gender</label
+                    >
+                    <select name="gender_txt"  class="form-select" >
+                    <?php getSex(); ?>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >ID Passport Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="idpassport_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Nationality</label
+                    >
+                    <select name="nationality_txt"  class="form-select" >
+                    <?php getNationality(); ?>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Country</label
+                    >
+                    <select name="country_txt" class="form-select" >
+                    <?php getCountry(); ?>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Date Of Birth</label
+                    >
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="dob_txt"
+                      id="dateInput"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Place Of Birth</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="pob_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Phone Number</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="phonenumber_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Email</label
+                    >
+                    <input
+                      type="email"
+                      class="form-control"
+                      name="email_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Current Address</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="currentadrr_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputPassword4" class="form-label"
+                      >Current Address PP</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="currentadrrPP_txt"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Student Image</label>
+                    <input
+                      type="file"
+                      class="form-control"
+                      name="photo_txt"
+                    />
+                  </div>
+                  
+                  <div class="text-center">
+                    <input type="submit" name="btn_sub" class="btn btn-primary">
+                      
+                    </input>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                     
+                    </input>
+                  </div>
+                </form>
+      </div>
+        
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+    </div>
+  </div>
+</div>
+
 <div class="pagetitle">
     <h1>List Student</h1>
     <div class="card-header">

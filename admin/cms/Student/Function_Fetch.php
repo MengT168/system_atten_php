@@ -1,7 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
-    
+   
     $conn = mysqli_connect("localhost","root","","demo_db");
     function Insert()
 {
@@ -13,7 +13,9 @@
 
     if (isset($_POST["btn_add"])) {
        
-
+        $id="";
+        if(isset($_GET[ 'id']))
+        $id=$_GET['id'];
         $fathername = $_POST['fathername'];
         $fatherage = $_POST['fatherage'];
         $fathernationality = $_POST['fathernationality'];
@@ -28,9 +30,9 @@
         $spousename = $_POST['spousename'];
         $spouseage = $_POST['spouseage'];
         $guardianphonenumber = $_POST['guardianphonenumber'];
-        $stuId = $_SESSION['id'];
+        // $stuId = $_SESSION['id'];
         
-        $sql_check= "SELECT * FROM familybackground_tbl WHERE studentId='$stuId'";
+        $sql_check= "SELECT * FROM familybackground_tbl WHERE studentId='$id'";
             $exec=mysqli_query($conn, $sql_check);
             $count=mysqli_num_rows($exec);
 
@@ -52,7 +54,7 @@
                 if (!empty($fathername) && !empty($fatherage) && !empty($mothername) && !empty($motherage) && !empty($spousename) && !empty($spouseage) && !empty($guardianphonenumber) && !empty($familycurrenaddress)) {
                     $sql_ins = "INSERT INTO `familybackground_tbl`
                     (`FatherName`, `FatherAge`, `FatherNationalityID`, `FatherCountryID`, `FatherOccupationID`, `MotherName`, `MotherAge`, `MotherNationalityID`, `MotherCountryID`, `MotherOccupationID`, `FamilyCurrentAddress`, `SpouseName`, `SpouseAge`, `GuardianPhoneNumber`, `StudentID`) 
-              VALUES ('$fathername','$fatherage','$fathernationality','$fathercountry','$fatheroccupation','$mothername','$motherage', '$mothernationality' ,'$mothercountry','$motheroccupation','$familycurrenaddress','$spousename','$spouseage' ,'$guardianphonenumber' ,'$stuId')";
+              VALUES ('$fathername','$fatherage','$fathernationality','$fathercountry','$fatheroccupation','$mothername','$motherage', '$mothernationality' ,'$mothercountry','$motheroccupation','$familycurrenaddress','$spousename','$spouseage' ,'$guardianphonenumber' ,'$id')";
                     $rs = $conn->query($sql_ins);
                     if ($rs) {
                         echo '
