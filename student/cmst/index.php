@@ -232,6 +232,29 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
             </li>
           </ul>
         </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link collapsed"
+            data-bs-target="#forms-nav1"
+            data-bs-toggle="collapse"
+            href="#"
+          >
+            <i class="bi bi-journal-text"></i><span>Status</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul
+            id="forms-nav1"
+            class="nav-content collapse"
+            data-bs-parent="#sidebar-nav"
+          >
+            <li>
+              <a href="?tag=status">
+                <i class="bi bi-circle"></i><span>View Status</span>
+              </a>
+            </li>
+          </ul>
+        </li>
         <!-- End Components Nav -->
         
 
