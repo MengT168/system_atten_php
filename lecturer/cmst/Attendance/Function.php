@@ -20,6 +20,7 @@
         INNER JOIN schedule_tbl ON program_tbl.ProgramID = schedule_tbl.ProgramID
         INNER JOIN lecturer_tbl ON schedule_tbl.LecturerID = lecturer_tbl.LecturerID
         WHERE lecturer_tbl.LecturerID=$id
+        ORDER BY program_tbl.ProgramID
         ";
         $exec = mysqli_query($conn, $sql);
         while ($rw = mysqli_fetch_array($exec)) {
@@ -34,7 +35,7 @@
             $acadId = $rw['AcademicYear'];
             echo '
                     <option value='.$ProgramID.'>
-                               '.$yearId.'/'.$semesterId.''.$majorId.'/'.$batchId.'/'.$campusId.'/'.$degreeId.'/'.$shiftId.'/'.$acadId.'
+                               '.$ProgramID.'/'.$yearId.'/'.$semesterId.''.$majorId.'/'.$batchId.'/'.$campusId.'/'.$degreeId.'/'.$shiftId.'/'.$acadId.'
                     </option>
                 ';
         }

@@ -338,7 +338,7 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
                     if($tag=="stu_info")
                     include("Student_Info/student_Info.php");
                   elseif($tag=='stu_atten')
-                    include("Student_atten/student_atten.php");
+                    include("Attendance/view_attendance.php");
 
                     elseif($tag=='schedule')
                     include("Schedule_info/view_schedule.php");
