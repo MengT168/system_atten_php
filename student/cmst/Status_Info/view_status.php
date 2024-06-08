@@ -30,7 +30,7 @@
 <main id="main" class="main">
 
 <div class="pagetitle">
-  <h1>Student Information</h1>
+  <h1>Student Status</h1>
   <!-- <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -70,113 +70,14 @@
       <div class="card">
         <div class="card-body pt-3">
           <!-- Bordered Tabs -->
-          <ul class="nav nav-tabs nav-tabs-bordered">
-
+          <ul class="nav nav-tabs ">
             <li class="nav-item">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-set" style="font-weight: bolder;
+               font-size: 20px; color: white; background-color: green;">View Status</button>
             </li>
-
-            <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
-            </li>
-
-            <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Family Background</button>
-            </li>
-
-            <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Family Background View</button>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-passwor">Edit Family Background</button>
-            </li>
-            <!-- <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-set">Status View</button>
-            </li> -->
 
           </ul>
           <div class="tab-content pt-2">
-
-            <div class="tab-pane fade show active profile-overview" id="profile-overview">
-              <!-- <h5 class="card-title">About</h5>
-              <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p> -->
-
-              <h5 class="card-title">Profile Details</h5>
-                <?php
-                 $Id = $_SESSION['id'];
-                
-             $sql="SELECT StudentID , NameInKhmer , NameInLatin , FamilyName , GivenName , SexKH , SexEN , IDPassportNo , NationalityKH , NationalityEN , CountryKH , CountryEN , DOB , POB , PhoneNumber , Email , CurrentAddress , CurrentAddressPP , RegisterDate  FROM `studentinfo_tbl` 
-             INNER JOIN sex_tbl on studentinfo_tbl.SexID = sex_tbl.SexID
-             INNER JOIN country_tbl ON studentinfo_tbl.CountryID = country_tbl.CountryID
-             INNER JOIN nationality_tbl ON studentinfo_tbl.NationalityID = nationality_tbl.NationalityID WHERE StudentId = '$Id' ";
-             $rs=$conn->query($sql);
-                    while($rw = mysqli_fetch_assoc($rs)){
-                ?>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label ">Name In Khmer</div>
-                <div class="col-lg-9 col-md-8 A" ><h4><?php echo $rw['NameInKhmer'] ?></h4></div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Name In Latin</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['NameInLatin'] ?></h6></div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Family Name</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['FamilyName'] ?></h6></div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Given Name</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['GivenName'] ?></h6></div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Gender</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['SexKH'] ?>/<?php echo $rw['SexEN'] ?></h6></div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">ID Passport</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['IDPassportNo'] ?></h6></div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Nationality</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['NationalityKH'] ?>/<?php echo $rw['NationalityEN'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Country</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['CountryKH'] ?>/<?php echo $rw['CountryEN'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Date Of Birth</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['DOB'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Place Of Birth</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['POB'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Phone Number</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['PhoneNumber'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Email</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['Email'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Current Address</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['CurrentAddress'] ?></h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Current Address PP</div>
-                <div class="col-lg-9 col-md-8"><h6><?php echo $rw['CurrentAddressPP'] ?></h6></div>
-              </div>
-               
-            </div>
-            <?php } ?>
 
             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                       <?php
@@ -356,7 +257,6 @@
                           if($count>0){
                 echo '<div class="tab-pane fade pt-3" id="profile-settings">Data already created</div>';
                           }else{
-
                           ?>
                           
             <div class="tab-pane fade pt-3" id="profile-settings">
@@ -770,13 +670,11 @@
               </form><!-- End Change Password Form -->
                   
             </div>
-
-
-
             <div class="tab-pane fade show  profile-overview" id="profile-set">            
-             
+              <!-- <h5 class="card-title">About</h5>
+              <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p> -->
 
-<div><h4 style="text-align: center;" >Student Status</h4></div>
+              <div><h4 style="text-align: center;" >Student Status</h4></div>
                 <?php
                
                 

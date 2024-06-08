@@ -209,7 +209,39 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
           </ul>
         </li>
 
+
         <!-- VAN Sarath ForList Schedule -->
+
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Schedule</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="?tag=schedule">
+              <i class="bi bi-circle"></i><span>View Schedule</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav1" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Status</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="?tag=status">
+              <i class="bi bi-circle"></i><span>View Status</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+        <!-- End Components Nav -->
         <li class="nav-item">
           <a
             class="nav-link collapsed"
@@ -217,7 +249,7 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
             data-bs-toggle="collapse"
             href="#"
           >
-            <i class="bi bi-journal-text"></i><span>Schedule</span
+            <i class="bi bi-journal-text"></i><span>View Attendance</span
             ><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul
@@ -226,60 +258,28 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
             data-bs-parent="#sidebar-nav"
           >
             <li>
-              <a href="?tag=schedule">
-                <i class="bi bi-circle"></i><span>View Schedule</span>
+              <a href="?tag=stu_atten">
+                <i class="bi bi-circle"></i><span>Attendance</span>
               </a>
             </li>
           </ul>
         </li>
 
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#forms-nav1"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-journal-text"></i><span>Status</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="forms-nav1"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=status">
-                <i class="bi bi-circle"></i><span>View Status</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <!-- End Components Nav -->
-        
+
 
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#tables-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-layout-text-window-reverse"></i><span>Scan Attendance</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="tables-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=scan">
-                <i class="bi bi-circle"></i><span>Scan Here</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <a class="nav-link collapsed" data-bs-target="#tables-n" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Scan Attendance</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-n" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="?tag=scan">
+              <i class="bi bi-circle"></i><span>Scan Here</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
         
         <!-- End Components Nav -->
       </ul>
@@ -342,6 +342,9 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
 
                     elseif($tag=='schedule')
                     include("Schedule_info/view_schedule.php");
+
+                    elseif($tag=='status')
+                    include("Status_Info/view_status.php");
 
                     elseif($tag=='scan')
                     include("Student_scan/Student_scan.php");
