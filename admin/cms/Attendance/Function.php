@@ -186,6 +186,40 @@ Insert();
                 ';
         }
     }
+    function getProgram(){
+        global $conn;
+        $id="";
+        if(isset($_GET[ 'id']))
+        $id=$_GET['id'];
+        $sql = "SELECT * FROM program_tbl 
+        INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
+        INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
+        INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
+        INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
+        INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.AcademicYearID
+        INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
+        INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
+        INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
+        INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID 
+        ORDER BY program_tbl.ProgramID ASC ";
+        $exec = mysqli_query($conn, $sql);
+        while ($rw = mysqli_fetch_array($exec)) {
+            $ProgramID= $rw['ProgramID'];
+            $yearId = $rw['YearEN'];
+            $semesterId = $rw['SemesterEN'];
+            $majorId = $rw['MajorId'];
+            $batchId = $rw['BatchEN'];
+            $campusId = $rw['CampusEN'];
+            $degreeId = $rw['DegreeNameEN'];
+            $shiftId = $rw['ShiftEN'];
+            $acadId = $rw['AcademicYear'];
+            echo '
+                    <option value='.$ProgramID.'>
+                               '.$yearId.'/'.$semesterId.''.$majorId.'/'.$batchId.'/'.$campusId.'/'.$degreeId.'/'.$shiftId.'/'.$acadId.'
+                    </option>
+                ';
+        }
+    }
 
     
     

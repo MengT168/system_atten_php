@@ -227,14 +227,23 @@ Insert();
 
     function getSubject(){
         global $conn;
-        $sql = "SELECT * FROM `subject_tbl` ORDER BY SubjectID";
+        $sql = "SELECT * FROM `subject_tbl`
+            INNER JOIN faculty_tbl ON subject_tbl.FacultyID = faculty_tbl.FacultyID
+            INNER JOIN major_tbl ON subject_tbl.MajorID = major_tbl.MajorID
+            INNER JOIN year_tbl ON subject_tbl.YearID = year_tbl.YearID 
+            INNER JOIN semester_tbl ON subject_tbl.SemesterID = semester_tbl.SemesterID 
+            ORDER BY SubjectID";
         $exec = mysqli_query($conn, $sql);
         while ($rw = mysqli_fetch_array($exec)) {
             $SubjectID= $rw['SubjectID'];
-            $SubjectKH= $rw['SubjectEN'];
+            $SubjectEN= $rw['SubjectEN'];
+            $FacultyEN= $rw['FacultyEN'];
+            $MajorEN= $rw['MajorEN'];
+            $YearEN= $rw['YearEN'];
+            $SemesterEN= $rw['SemesterEN'];
             echo '
                     <option value='.$SubjectID.'>
-                               '.$SubjectKH.'
+                               '.$SubjectEN.'/'.$MajorEN.'/'.$YearEN.'/'.$SemesterEN.'
                     </option>
                 ';
         }

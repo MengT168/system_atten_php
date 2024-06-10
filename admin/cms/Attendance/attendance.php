@@ -25,6 +25,7 @@
     <title>Document</title>
 </head>
 <?php
+require("Function.php");
 require("./connect.php");
 $op = "";
 $id = "";
@@ -218,108 +219,71 @@ if (isset($_POST['btn_update'])) {
     } else {
 
     ?>
-
-
-
-
         <main id="main" class="main">
-            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Create
-            </button>
-            
-            <!-- Modal -->
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Attendace</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <?php
-                            require('Function.php');
-                            ?>
-                            <form class="row g-3" method="post" enctype="multipart/form-data">
-                                <div class="col-6">
-                                    <label class="form-label">Student Status Name</label>
-                                    <select name="studentstatusname" class="form-select">
-                                        <option value="">Select One</option>
-                                        <?php getStudentStatus(); ?>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label for="inputPassword4" class="form-label">Attendance Date Issue </label>
-                                    <input type="date" class="form-control" name="attendate" id="dateInput" />
-                                </div>
-
-                                <div class="col-6">
-                                    <label class="form-label">Subject</label>
-                                    <select name="subjecttxt" class="form-select">
-                                        <option value="">Select One</option>
-                                        <?php getSubject(); ?>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label for="inputPassword4" class="form-label">Lecturer</label>
-                                    <select name="lecturetxt" class="form-select">
-                                        <option value="">Select One</option>
-                                        <?php getLecture(); ?>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label for="inputPassword4" class="form-label">Attended</label>
-                                    <select name="attended" class="form-select">
-                                        <option value="">Select One</option>
-                                        <option value="1"><span>&#10003;</span></option>
-                                        <option value="P">P</option>
-                                        <option value="A">A</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label for="inputPassword4" class="form-label">Attendance Note </label>
-                                    <input type="text"  class="form-control" name="attennote" />
-                                </div>
-
-                                <div class="col-6">
-                                    <label for="inputPassword4" class="form-label">Section</label>
-                                    <input type="text" class="form-control" name="section" />
-                                </div>
-
-                                <div class="col-6">
-                                    <label for="inputPassword4" class="form-label">Date Issue </label>
-                                    <input type="date" class="form-control" name="Dateissue" id="dateInput" />
-                                </div>
-                                <div class="text-center">
-                                    <input type="submit" value="Submit" name="btn_sub" class="btn btn-primary">
-                                    </input>
-
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-                                    <!-- <input type="reset" class="btn btn-secondary"> -->
-
-                                    </input>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                    </div>
-                </div>
-            </div>
             <section class="section">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Attendance Table</h5>
+                                <div class="row g-2">
+                            <div class="col-3">
+                                <label class="form-label">Program</label>
+                                <select id="program" name="academicpro" class="form-select">
+                                    <option value="">Select One</option>
+                                    <?php getProgram(); ?>
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <a id="searchBtn" style="margin-top: 30px;" href="#" class="btn btn-primary">Search</a>
+                            </div>
+                            </div>
 
-                                <!-- Vertical Form -->
-                                <form class="row g-3" method="post" enctype="multipart/form-data">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+       
+</body>
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function(event) {
+        event.preventDefault(); 
+
+        // Get the selected values
+        var program = document.getElementById('program').value;
+        
+        // Construct the URL with the selected values
+        var url = '?tag=attendance&op=search';
+        url += '&program=' + encodeURIComponent(program);
+        
+        window.location.href = url;
+    });
+</script>
+</html>
+<?php
+if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GET['tag'] == 'attendance') {
+    $program = "";
+    if (isset($_SESSION['idL']))
+    $id = $_SESSION['idL'];
+
+    if (isset($_GET['program']))
+        $program = $_GET['program'];
+    
+       
+?>
+
+<main id="main" class="main" style="margin-top: -30px;" >
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- <h5 class="card-title">Schedule</h5> -->
+                        
+                            <!-- Templete Attendance -->
+                            <form class="row g-3" method="post" enctype="multipart/form-data">
                                     <table class="table table-striped" cellpadding="2">
                                         <thead>
                                             <th scope="col-2">Attendance ID</th>
@@ -336,10 +300,12 @@ if (isset($_POST['btn_update'])) {
                                         <?php
                                         include_once 'connect.php';
                                         $query = "SELECT * FROM `attendance_tbl` 
-                                        INNER JOIN studentstatus_tbl on attendance_tbl.StudentStatusID = studentstatus_tbl.StudentStatusID 
+                                        INNER JOIN studentstatus_tbl on attendance_tbl.StudentStatusID = studentstatus_tbl.StudentStatusID
                                         INNER JOIN studentinfo_tbl on studentstatus_tbl.StudentID = studentinfo_tbl.StudentID 
                                         INNER JOIN subject_tbl on attendance_tbl.SubjectID = subject_tbl.SubjectID 
-                                        INNER JOIN lecturer_tbl on attendance_tbl.LecturerID = lecturer_tbl.LecturerID";
+                                        INNER JOIN lecturer_tbl on attendance_tbl.LecturerID = lecturer_tbl.LecturerID
+                                        INNER JOIN program_tbl ON studentstatus_tbl.ProgramID = program_tbl.ProgramID
+                                        WHERE studentstatus_tbl.ProgramID =$program";
                                         $result = mysqli_query($conn, $query);
                                         if (!$result) {
                                             die("Invalid query" . mysqli_error($conn));
@@ -376,31 +342,19 @@ if (isset($_POST['btn_update'])) {
                     </tr>
 
                                     </table>
-                                <?php
-                            }
-                                ?>
+                               
                                 </form>
-                            </div>
+
+                           <!-- End Of Templete -->
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
-        <!-- <script>
-    $(document).ready(function() {
-        $('#delete').click(function(event) {
-            event.preventDefault(); // Prevent the default action
+            </div>
+        </section>
+    </main>
 
-            var attendanceID = $(this).data('id');
-            var userConfirmed = confirm('Are you sure?');
 
-            if (userConfirmed) {
-                window.location.href = "?tag=attendance&op=del&id=" + attendanceID;
-            }
-            
-        });
-    });
-</script> -->
-</body>
-
-</html>
+<?php
+}
+}
+?>

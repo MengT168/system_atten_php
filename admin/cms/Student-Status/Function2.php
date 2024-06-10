@@ -19,19 +19,25 @@
 
     function getStudent(){
         global $conn;
-        $sql = "SELECT * FROM studentinfo_tbl ORDER BY StudentID";
+        $sql = "SELECT * FROM studentinfo_tbl 
+                WHERE StudentID NOT IN (SELECT StudentID FROM studentstatus_tbl)
+                ORDER BY StudentID";
         $exec = mysqli_query($conn, $sql);
+        if (!$exec) {
+            echo "Error executing query: " . mysqli_error($conn);
+            return;
+        }
         while ($rw = mysqli_fetch_array($exec)) {
             $StudentID= $rw['StudentID'];
             $NameInLatin= $rw['NameInLatin'];
             echo '
-                    <option value='.$StudentID.'>
-                               '.$NameInLatin.'
-                    </option>
-                ';
+                <option value="'.$StudentID.'">
+                    '.$NameInLatin.'
+                </option>
+            ';
         }
     }
-
+    
     function getSemester(){
         global $conn;
         $sql = "SELECT * FROM semester_tbl ORDER BY SemesterID";
