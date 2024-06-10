@@ -31,8 +31,8 @@ if($tag=="logout")
 // }
 if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
   // Fetch user profile data from the database based on the $uid (user ID)
-  $u_id = $_SESSION['idL'];
-  $sqlchcek = "SELECT * FROM lecturer_tbl WHERE LecturerID = '$u_id' ";
+  // $u_id = $_SESSION['idL'];
+  $sqlchcek = "SELECT * FROM lecturer_tbl WHERE LecturerID = '$uid' ";
   $exec = mysqli_query($conn, $sqlchcek);
   if ($exec && mysqli_num_rows($exec) > 0) {
      

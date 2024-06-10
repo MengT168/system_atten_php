@@ -16,7 +16,7 @@
         if($count> 0){
             $user_row =mysqli_fetch_array($exec);
 
-            $_SESSION['idL']= $user_row['id'];
+            $_SESSION['idL']= $user_row['LecturerID'];
             $_SESSION['uname']= $uname;
             $_SESSION['log'] = true;
             header("Location: ../lecturer/cmst/index.php");

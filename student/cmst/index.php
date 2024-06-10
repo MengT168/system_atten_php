@@ -29,14 +29,12 @@ if($tag=="logout")
 // if(isset($_SESSION['ulog'])!=true){
 //   header("Location: ../");
 // }
-if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
+if (isset($_SESSION['log'] ) && $_SESSION['log'] == true && $_SESSION['idS'] && $_SESSION['uname'] ) {
   // Fetch user profile data from the database based on the $uid (user ID)
-  $u_id = $_SESSION['idS'];
-  $sqlchcek = "SELECT * FROM studentinfo_tbl WHERE StudentId = '$u_id' ";
+  // $u_id = $_SESSION['idS'];
+  $sqlchcek = "SELECT * FROM studentinfo_tbl WHERE StudentId = '$uid' ";
   $exec = mysqli_query($conn, $sqlchcek);
-  if ($exec && mysqli_num_rows($exec) > 0) {
-     
-  }
+  
 } else {
   header("Location: ../../");
 
@@ -155,10 +153,6 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
             <?php
           }
             ?>
-              
-
-              
-  
               <li>
                 <a class="dropdown-item d-flex align-items-center" href="?tag=logout">
                   <i class="bi bi-box-arrow-right"></i>

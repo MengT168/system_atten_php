@@ -47,7 +47,7 @@
       <div class="card">
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
         <?php
-        $Id = $_SESSION['id'];
+        $Id = $_SESSION['idS'];
         $conn = mysqli_connect("localhost","root","","demo_db");
     $sql="SELECT * FROM studentinfo_tbl WHERE StudentId = '$Id' ";
     $rs=$conn->query($sql);
@@ -103,7 +103,7 @@
 
               <h5 class="card-title">Profile Details</h5>
                 <?php
-                 $Id = $_SESSION['id'];
+                 $Id = $_SESSION['idS'];
                 
              $sql="SELECT StudentID , NameInKhmer , NameInLatin , FamilyName , GivenName , SexKH , SexEN , IDPassportNo , NationalityKH , NationalityEN , CountryKH , CountryEN , DOB , POB , PhoneNumber , Email , CurrentAddress , CurrentAddressPP , RegisterDate  FROM `studentinfo_tbl` 
              INNER JOIN sex_tbl on studentinfo_tbl.SexID = sex_tbl.SexID
@@ -348,7 +348,7 @@
                           <!-- Check -->
                           <?php
                           $conn = mysqli_connect("localhost","root","","demo_db");
-                          $id=$_SESSION['id'];
+                          $id=$_SESSION['idS'];
                             $sql = "SELECT StudentID FROM familybackground_tbl WHERE StudentID = '$id'";
                             $exec=mysqli_query($conn, $sql);
                           $count=mysqli_num_rows($exec);
