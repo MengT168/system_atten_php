@@ -5,7 +5,7 @@
     
     function getProgram(){
         global $conn;
-        $id = $_SESSION['id'];
+        $id = $_SESSION['idL'];
         
         $sql = "SELECT * FROM program_tbl 
         INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID

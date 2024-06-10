@@ -5,7 +5,7 @@
     
     function getProgram(){
         global $conn;
-        $id = $_SESSION['id'];
+        $id = $_SESSION['idS'];
 
        
         

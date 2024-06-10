@@ -14,8 +14,8 @@ if(isset($_GET['op']))
 if(isset($_GET['id']))
   $id=$_GET['id'];
 
-if(isset($_SESSION['id']))
-  $uid=$_SESSION['id'];
+if(isset($_SESSION['idS']))
+  $uid=$_SESSION['idS'];
 
 if(isset($_GET['tag']))
   $tag=$_GET['tag'];
@@ -31,7 +31,7 @@ if($tag=="logout")
 // }
 if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
   // Fetch user profile data from the database based on the $uid (user ID)
-  $u_id = $_SESSION['id'];
+  $u_id = $_SESSION['idS'];
   $sqlchcek = "SELECT * FROM studentinfo_tbl WHERE StudentId = '$u_id' ";
   $exec = mysqli_query($conn, $sqlchcek);
   if ($exec && mysqli_num_rows($exec) > 0) {

@@ -7,7 +7,7 @@ if (isset($_GET['op']))
     $op = $_GET['op'];
 
 // if (isset($_GET['id']))
-    $id = $_SESSION['id'];
+    $id = $_SESSION['idL'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -358,8 +358,8 @@ if (isset($_GET['op']))
 <?php
 if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GET['tag'] == 'schedule') {
     $program = "";
-    if (isset($_SESSION['id']))
-    $id = $_SESSION['id'];
+    if (isset($_SESSION['idL']))
+    $id = $_SESSION['idL'];
 
     if (isset($_GET['program']))
         $program = $_GET['program'];

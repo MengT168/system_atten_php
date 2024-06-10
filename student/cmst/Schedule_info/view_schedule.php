@@ -141,7 +141,7 @@
 
 <?php
 
-        $studentID = $_SESSION['id'];
+        $studentID = $_SESSION['idS'];
         $sqlprogram = "SELECT * FROM studentstatus_tbl WHERE StudentID = $studentID"; 
         $rs = $conn->query($sqlprogram);
         $row = mysqli_fetch_assoc($rs);

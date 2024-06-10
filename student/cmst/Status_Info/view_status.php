@@ -20,7 +20,7 @@
               <div><h4 style="text-align: center;" >Student Status</h4></div>
                 <?php
 
-                $id = $_SESSION['id'];
+                $id = $_SESSION['idS'];
                 
                $sql1="SELECT * FROM `studentstatus_tbl` 
                INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID

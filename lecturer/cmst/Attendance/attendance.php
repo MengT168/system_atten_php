@@ -7,7 +7,7 @@ if (isset($_GET['op']))
     $op = $_GET['op'];
 
 // if (isset($_GET['id']))
-    $id = $_SESSION['id'];
+    $id = $_SESSION['idL'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -424,8 +424,8 @@ if (isset($_GET['op']))
 <?php
 if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GET['tag'] == 'attendance') {
     $program = "";
-    if (isset($_SESSION['id']))
-    $id = $_SESSION['id'];
+    if (isset($_SESSION['idL']))
+    $id = $_SESSION['idL'];
 
     if (isset($_GET['program']))
         $program = $_GET['program'];
@@ -463,18 +463,19 @@ if ($rs1 && $rs1->num_rows > 0) {
 }
 
 // Query to get the program details
-$sql_Pro = "SELECT * FROM program_tbl 
-INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
-INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
+$sql_Pro = "SELECT * FROM `schedule_tbl` 
+INNER JOIN program_tbl ON schedule_tbl.ProgramID = program_tbl.ProgramID
+INNER JOIN subject_tbl ON schedule_tbl.SubjectID = subject_tbl.SubjectID
+INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID
 INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
 INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
-INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.AcademicYearID
+INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID
 INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
-INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
 INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
-INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID 
-INNER JOIN dayweek_tbl ON shift_tbl.ShiftID = dayweek_tbl.DayWeekID
-WHERE ProgramID='$program'";
+INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
+INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
+INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.AcademicYearID
+WHERE schedule_tbl.ProgramID='$program' AND schedule_tbl.LecturerID = $id  ";
 $rs = $conn->query($sql_Pro);
 
 // Check if there are any results for the program query

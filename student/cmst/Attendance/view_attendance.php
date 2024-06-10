@@ -7,7 +7,7 @@ if (isset($_GET['op']))
     $op = $_GET['op'];
 
 // if (isset($_GET['id']))
-    $id = $_SESSION['id'];
+    $id = $_SESSION['idS'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -424,8 +424,8 @@ if (isset($_GET['op']))
 <?php
 if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GET['tag'] == 'stu_atten') {
     $lectid = "";
-    if (isset($_SESSION['id']))
-    $stuId = $_SESSION['id'];
+    if (isset($_SESSION['idS']))
+    $stuId = $_SESSION['idS'];
 
     $sql_status = "SELECT * FROM `studentstatus_tbl` WHERE StudentID=$stuId";
     $rss = $conn->query($sql_status);
