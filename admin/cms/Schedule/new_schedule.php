@@ -43,13 +43,13 @@ function updateTime(daytxt) {
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-function updateProgram(subjecttxt) {
+function updateProgram(programtxt) {
     $.ajax({
         url: 'fetch_programs.php',
         type: 'POST',
-        data: { subjectID: subjecttxt },
+        data: { programID: programtxt },
         success: function(response) {
-            $('select[name="programtxt"]').html(response);
+            $('select[name="subjecttxt"]').html(response);
         },
         error: function() {
             alert('Error fetching programs');
@@ -83,13 +83,23 @@ function updateRoom(campusID) {
                 <h5 class="card-title">Schedule</h5>
 
                 <form class="row g-3" method="post" enctype="multipart/form-data" >
+
+                <div class="col-6">
+                    <label for="inputPassword4" class="form-label"
+                      >Program</label
+                    >
+                    <select name="programtxt" id="programSelect" class="form-select" onchange="updateProgram(this.value)" >
+                    <?php getProgram(); ?>
+                </select>
+                  </div>
+
                   <div class="col-6">
                     <label  class="form-label"
                       >Subject</label
                     >
-                    <select name="subjecttxt" class="form-select" onchange="updateProgram(this.value)">
+                    <select name="subjecttxt" class="form-select" ">
                   <option value="">Select One</option>
-                  <?php getSubject(); ?>
+                  <!-- <?php getSubject(); ?> -->
                 </select>
                   </div>
                  
@@ -128,13 +138,7 @@ function updateRoom(campusID) {
                     <?php getRoom(); ?>
                     </select>
                   </div>
-                  <div class="col-6">
-                    <label for="inputPassword4" class="form-label"
-                      >Program</label
-                    >
-                    <select name="programtxt" id="programSelect" class="form-select">
-                </select>
-                  </div>
+                  
                   <div class="col-6">
                     <label for="inputPassword4" class="form-label"
                       >Schedule Date</label

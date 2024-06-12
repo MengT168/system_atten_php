@@ -396,6 +396,12 @@ if (isset($_GET['op']))
                             <div class="col-2">
                                 <a id="searchBtn" style="margin-top: 30px;" href="#" class="btn btn-primary">Search</a>
                             </div>
+                            <!-- <div class="col-4"  >
+                            <form method="post" style="display: flex; gap: 5px; justify-content: space-between; margin-top: 30px; "   >
+                            <input type="date" class="form-control" >
+                            <button class="btn btn-primary" >Search</button>
+                            </form>
+                            </div> -->
                         </div>
                             
                         </div>
@@ -419,6 +425,25 @@ if (isset($_GET['op']))
         window.location.href = url;
     });
 </script>
+<script>
+    // Get the input element
+    var dateInput = document.getElementById('dateInput');
+
+    // Add an event listener to listen for changes in the input value
+    dateInput.addEventListener('change', function() {
+      // Get the value of the input
+      var inputValue = this.value;
+
+      // Split the input value into parts (year, month, day)
+      var parts = inputValue.split('-');
+
+      // Rearrange the parts into the desired format
+      var formattedDate = parts[0] + '-' + parts[1] + '-' + parts[2];
+
+      // Update the input value with the new format
+      this.value = formattedDate;
+    });
+  </script>
 </html>
 
 <?php
@@ -478,7 +503,6 @@ INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.Aca
 WHERE schedule_tbl.ProgramID='$program' AND schedule_tbl.LecturerID = $id  ";
 $rs = $conn->query($sql_Pro);
 
-// Check if there are any results for the program query
 if ($rs && $rs->num_rows > 0) {
     while ($row = mysqli_fetch_assoc($rs)) {
         ?>
@@ -505,11 +529,10 @@ if ($rs && $rs->num_rows > 0) {
     }
 }
 ?>
-                            <!-- Templete Attendance -->
                             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container"  >
 <div class="row">
-	<div class="col-lg-12">
+	<div class="col-lg-9">
 		<div class="main-box clearfix">
         <div class="table-responsive">
     <form method="post" enctype="multipart/form-data">
@@ -518,8 +541,6 @@ if ($rs && $rs->num_rows > 0) {
                 <tr>
                     <th><span>Student</span></th>
                     <th><span>Gender</span></th>
-                    <th class="text-center"><span>Date Of Birth</span></th>
-                    <th><span>Email</span></th>
                     <th><span>AttendNote</span></th>
                     <th><span>Section</span></th>
                     <th><span>Attended</span></th>
@@ -527,6 +548,87 @@ if ($rs && $rs->num_rows > 0) {
                 </tr>
             </thead>
             <tbody>
+            <?php
+if(isset($_POST['serach_atten'])) {
+    $date = $_POST['search_date'];
+    if($date != '') {
+        // Assuming $program and $id are defined somewhere in your code
+        $sqlSearch = "SELECT * FROM `schedule_tbl`
+                      INNER JOIN `subject_tbl` ON schedule_tbl.SubjectID = subject_tbl.SubjectID
+                      INNER JOIN `time_tbl` ON schedule_tbl.TimeID = time_tbl.TimeID
+                      INNER JOIN `lecturer_tbl` ON schedule_tbl.LecturerID = lecturer_tbl.LecturerID
+                      INNER JOIN `dayweek_tbl` ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID
+                      INNER JOIN `room_tbl` ON schedule_tbl.RoomID = room_tbl.RoomID
+                      INNER JOIN `campus_tbl` ON room_tbl.CampusID = campus_tbl.CampusID
+                      INNER JOIN `studentstatus_tbl` ON schedule_tbl.ProgramID = studentstatus_tbl.ProgramID
+                      INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
+                      INNER JOIN sex_tbl ON studentinfo_tbl.SexID = sex_tbl.SexID
+                      INNER JOIN attendance_tbl ON schedule_tbl.LecturerID = attendance_tbl.LecturerID
+                      WHERE schedule_tbl.ProgramID = ? AND schedule_tbl.LecturerID = ? AND attendance_tbl.DateIssue = ?
+                      ORDER BY studentinfo_tbl.StudentID
+                      ";
+        
+        // Assuming $conn is your database connection object
+        $stmt = $conn->prepare($sqlSearch);
+        $stmt->bind_param("iis", $program, $id, $date);
+        $stmt->execute();
+        $rs_list = $stmt->get_result();
+
+        while ($rows = mysqli_fetch_assoc($rs_list)) {
+            $studentStatusID = $rows['StudentStatusID'];
+            $subjectID1 = $rows['SubjectID'];
+?>
+
+
+<tr>
+    <td>
+        <img src="../../image/<?php echo $rows['Photo']; ?>" alt="Profile" class="rounded-circle" />
+        <a href="#" class="user-link"><?php echo $rows['NameInLatin']; ?></a>
+        <span class="user-subhead">Student</span>
+    </td>
+    <td><?php echo $rows['SexEN']; ?></td>
+    <td>
+        <input type="text" name="note[<?php echo $studentStatusID; ?>]" value="<?php echo $rows['AttendNote'] ?>" class="form-control" placeholder="Attendance Note">
+    </td>
+    <td>
+       
+    <input type="checkbox" name="section[<?php echo $studentStatusID; ?>]" <?php if ($rows['Section'] == 1) echo "checked"; ?> value="1">
+       
+        <label for="">1</label>
+        
+        <input type="checkbox" name="section[<?php echo $studentStatusID; ?>]" <?php if ($rows['Section'] == 2) echo "checked"; ?> value="2">
+        <label for="">2</label>
+    </td>
+    <td style="width: 20%;">
+        <input type="checkbox" name="status[<?php echo $studentStatusID; ?>][S]" <?php if ($rows['Attended'] == 1) echo "checked"; ?> value="1">
+        <label for="">S</label>
+        <input type="checkbox" name="status[<?php echo $studentStatusID; ?>][P]" <?php if ($rows['Attended'] == 2) echo "checked"; ?> value="2">
+        <label for="">P</label>
+        <input type="checkbox" name="status[<?php echo $studentStatusID; ?>][A]" <?php if ($rows['Attended'] == 3) echo "checked"; ?> value="3">
+        <label for="">A</label>
+    </td>
+    <td>
+        <p><?php echo $rows['DateIssue'] ?></p>
+    </td>
+</tr>
+
+                                
+
+
+
+
+
+
+</tbody>
+                            <?php
+                                    }
+                            }
+                            
+                        }
+                        
+                        else{
+                            ?>
+                                <tbody>
                 <?php
                 $sql_att = "SELECT *
                             FROM `schedule_tbl` 
@@ -555,12 +657,6 @@ if ($rs && $rs->num_rows > 0) {
                             <span class="user-subhead">Student</span>
                         </td>
                         <td><?php echo $rows['SexEN']; ?></td>
-                        <td class="text-center">
-                            <span class="label label-default"><?php echo $rows['DOB']; ?></span>
-                        </td>
-                        <td>
-                            <a href="#"><?php echo $rows['Email']; ?></a>
-                        </td>
                         <td>
                         <div style="display: flex; justify-content: space-between;" class="checkbox-list">
                                 <div>
@@ -600,17 +696,57 @@ if ($rs && $rs->num_rows > 0) {
                     </tr>
                 <?php } ?>
             </tbody>
+                            <?php } ?>
+           
         </table>
         <button class="btn btn-primary" style="float: right;" name="btn_sub">Submit</button>
     </form>
 </div>
-
-			
 		</div>
 	</div>
+                    <div class="col-lg-3" >
+                    <form method="post" style="display: flex; gap: 5px; justify-content: space-between; "   >
+                            <input type="date" id="dateInput" class="form-control" name="search_date" >
+                            <button class="btn btn-primary" name="serach_atten" >Search</button>
+                            </form>
+
+                            <div class="qrcode">
+    <?php
+        // Database connection and selection query
+        $sqlQr = "SELECT * FROM `schedule_tbl` 
+            INNER JOIN program_tbl ON schedule_tbl.ProgramID = program_tbl.ProgramID
+            INNER JOIN studentstatus_tbl ON schedule_tbl.ProgramID = studentstatus_tbl.ProgramID
+            INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
+            INNER JOIN subject_tbl ON schedule_tbl.SubjectID = subject_tbl.SubjectID
+            WHERE schedule_tbl.ProgramID = $program AND LecturerID = $id";
+
+        $result = mysqli_query($conn, $sqlQr); // Assuming $conn is your connection object
+
+        if ($row = mysqli_fetch_assoc($result)) {
+            $LecturerID = $row['LecturerID'];
+            $SubjectID = $row['SubjectID'];
+            $ProgramID = $row['ProgramID'];
+
+            // Concatenate the data to store in the QR code, ensuring it is URL-safe
+            $qrData = "LecturerID=$LecturerID&SubjectID=$SubjectID&ProgramID=$ProgramID";
+
+            // Encode the data to make it URL-safe
+            $qrData = urlencode($qrData);
+
+            // Generate the ZXing URL for the QR code
+            $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=$qrData&size=300x300";
+
+            // Display the QR code image with a margin-top style
+            echo "<img src='$qrCodeUrl' style='margin-top: 10px;' alt='QR Code' />";
+        } else {
+            echo "No data found";
+        }
+    ?>
+</div>
+
+                    </div>
 </div>
 </div>
-                           <!-- End Of Templete -->
                         </div>
                     </div>
                 </div>
@@ -626,7 +762,7 @@ if ($rs && $rs->num_rows > 0) {
 <?php
 
     if (isset($_POST['btn_sub'])) {
-        $attendanceDateIssue = date("Y-m-d h:i:s"); // Current date or a specific date if needed
+        $attendanceDateIssue = date("Y-m-d"); // Current date or a specific date if needed
         $lecturerID = $id; // Assuming $id contains the lecturer's ID
         $subjectID = $subjectID1; // Set this value from your data context
         $success = true;
@@ -634,7 +770,7 @@ if ($rs && $rs->num_rows > 0) {
             foreach ($statuses as $statusType => $attended) {
                 $attendNote = isset($_POST['note'][$studentStatusID]) ? $_POST['note'][$studentStatusID] : '';
                 $section = isset($_POST['section'][$studentStatusID]) ? $_POST['section'][$studentStatusID] : ''; // Retrieve section if checkbox is checked
-                $dateIssue = date("Y-m-d H:i:s"); // Current date and time
+                $dateIssue = date("Y-m-d"); // Current date and time
     
                 // Insert attendance record into attendance_tbl
                 $sql_insert = "INSERT INTO attendance_tbl (StudentStatusID, AttendanceDateIssue, SubjectID, Attended, AttendNote, Section, LecturerID, DateIssue)

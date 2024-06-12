@@ -248,7 +248,7 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
             data-bs-parent="#sidebar-nav"
           >
             <li>
-              <a href="?tag=scan">
+              <a href="?tag=qrcode">
                 <i class="bi bi-circle"></i><span>Scan Here</span>
               </a>
             </li>
@@ -313,8 +313,8 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
                     include("Schedule/schedule.php");
                   elseif($tag=='attendance')
                     include("Attendance/attendance.php");
-                  //   elseif($tag=='scan')
-                  //   include("Student_scan/Student_scan.php");
+                    elseif($tag=='qrcode')
+                    include("Qrcode/genQr.php");
                   
               
 else{

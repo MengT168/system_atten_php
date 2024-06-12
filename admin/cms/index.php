@@ -234,6 +234,11 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
               <i class="bi bi-circle"></i><span>View Status</span>
             </a>
           </li>
+          <li>
+            <a href="?tag=new1">
+              <i class="bi bi-circle"></i><span>New Status</span>
+            </a>
+          </li>
         </ul>
       </li>
 
@@ -576,6 +581,8 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
 
       elseif ($tag == "status")
       include("Student-Status/status.php");
+      elseif ($tag == "new1")
+      include("Student-Status/statasall.php");
 
       elseif ($tag == "educa")
       include("Educational/educational.php");

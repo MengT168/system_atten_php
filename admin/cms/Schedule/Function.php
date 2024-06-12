@@ -23,23 +23,23 @@
     
         if (!empty($subjecttxt) && !empty($lecturetxt) && !empty($daytxt) && !empty($timetxt) && !empty($roomtxt) && !empty($programtxt) && !empty($scheduleDate)) {
             
-            $queryProgramCheck = "SELECT * FROM studentstatus_tbl WHERE ProgramID = '$programtxt'";
-            $resultProgramCheck = $conn->query($queryProgramCheck);
-            if ($resultProgramCheck->num_rows == 0) {
-                echo '
-                <script>
-                $(document).ready(function(){
-                    swal({
-                        title: "Error!",
-                        text: "Program dont`t have student assign",
-                        icon: "error",
-                        button: "Done",
-                    });
-                });
-                </script>
-                ';
-                return;
-                    }
+            // $queryProgramCheck = "SELECT * FROM studentstatus_tbl WHERE ProgramID = '$programtxt'";
+            // $resultProgramCheck = $conn->query($queryProgramCheck);
+            // if ($resultProgramCheck->num_rows == 0) {
+            //     echo '
+            //     <script>
+            //     $(document).ready(function(){
+            //         swal({
+            //             title: "Error!",
+            //             text: "Program dont`t have student assign",
+            //             icon: "error",
+            //             button: "Done",
+            //         });
+            //     });
+            //     </script>
+            //     ';
+            //     return;
+            //         }
 
 
             // Fetch shiftID for the selected day
@@ -385,21 +385,50 @@ Insert();
         }
     }
     function getProgram(){
+        // global $conn;
+
+        // $sql_schedule_pro = "SELECT ProgramID FROM schedule_tbl";
+        // $rs = $conn->query($sql_schedule_pro);
+        
+        // $programidAll = array();
+        // if ($rs->num_rows > 0) {
+        //     while($row = $rs->fetch_assoc()) {
+        //         $programidAll[] = $row['ProgramID'];
+        //     }
+        // }
+        
+        // $programidAllString = implode(',', $programidAll);
+
+        // $sql = "SELECT * FROM program_tbl 
+        // INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
+        // INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
+        // INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
+        // INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
+        // INNER JOIN academicyear_tbl ON program_tbl.AcademicYearID = academicyear_tbl.AcademicYearID
+        // INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
+        // INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
+        // INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
+        // INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID 
+        // WHERE program_tbl.ProgramID IN ($programidAllString)";
+        // $exec = mysqli_query($conn, $sql);
+        // while ($rw = mysqli_fetch_array($exec)) {
+            // $ProgramID= $rw['ProgramID'];
+            // $yearId = $rw['YearEN'];
+            // $semesterId = $rw['SemesterEN'];
+            // $majorId = $rw['MajorEN'];
+            // $batchId = $rw['BatchEN'];
+            // $campusId = $rw['CampusEN'];
+            // $degreeId = $rw['DegreeNameEN'];
+            // $shiftId = $rw['ShiftEN'];
+            // $acadId = $rw['AcademicYear'];
+            // echo '
+            //         <option value='.$ProgramID.'>
+            //                    '.$yearId.'/'.$semesterId.''.$majorId.'/'.$batchId.'/'.$campusId.'/'.$degreeId.'/'.$shiftId.'/'.$acadId.'
+            //         </option>
+            //     ';
+        // }
         global $conn;
-
-        $sql_schedule_pro = "SELECT ProgramID FROM schedule_tbl";
-        $rs = $conn->query($sql_schedule_pro);
-        
-        $programidAll = array();
-        if ($rs->num_rows > 0) {
-            while($row = $rs->fetch_assoc()) {
-                $programidAll[] = $row['ProgramID'];
-            }
-        }
-        
-        $programidAllString = implode(',', $programidAll);
-
-        $sql = "SELECT * FROM program_tbl 
+        $sql = "SELECT * FROM `program_tbl`
         INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
         INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
         INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
@@ -408,8 +437,7 @@ Insert();
         INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
         INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
         INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
-        INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID 
-        WHERE program_tbl.ProgramID IN ($programidAllString)";
+        INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID ";
         $exec = mysqli_query($conn, $sql);
         while ($rw = mysqli_fetch_array($exec)) {
             $ProgramID= $rw['ProgramID'];
@@ -422,10 +450,10 @@ Insert();
             $shiftId = $rw['ShiftEN'];
             $acadId = $rw['AcademicYear'];
             echo '
-                    <option value='.$ProgramID.'>
-                               '.$yearId.'/'.$semesterId.''.$majorId.'/'.$batchId.'/'.$campusId.'/'.$degreeId.'/'.$shiftId.'/'.$acadId.'
-                    </option>
-                ';
+            <option value='.$ProgramID.'>
+                       '.$yearId.'/'.$semesterId.''.$majorId.'/'.$batchId.'/'.$campusId.'/'.$degreeId.'/'.$shiftId.'/'.$acadId.'
+            </option>
+        ';
         }
     }
 

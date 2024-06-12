@@ -1395,7 +1395,7 @@ else {
                             </script>
                             ';
                         } else {
-                            $query = "SELECT * FROM `schedule_tbl` WHERE `SubjectID`='$subjecttxt' AND `LecturerID`<>'$lecturetxt' AND `DayWeekID`='$daytxt' AND `TimeID`='$timetxt' AND `RoomID`='$roomtxt'";
+                            $query = "SELECT * FROM `schedule_tbl` WHERE `SubjectID`='$subjecttxt' AND `LecturerID`='$lecturetxt' AND `DayWeekID`='$daytxt' AND `TimeID`='$timetxt' AND `RoomID`='$roomtxt'";
                             $result = $conn->query($query);
                             if ($result->num_rows > 0) {
                                 echo '

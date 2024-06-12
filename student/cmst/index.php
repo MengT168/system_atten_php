@@ -341,7 +341,7 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true && $_SESSION['idS'] && 
                     include("Status_Info/view_status.php");
 
                     elseif($tag=='scan')
-                    include("Student_scan/Student_scan.php");
+                    include("Scan/scan.php");
                     
                   
               
