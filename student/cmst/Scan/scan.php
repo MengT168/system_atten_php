@@ -48,11 +48,6 @@
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
-// Database connection details
-$servername = "your_server_name";
-$username = "your_username";
-$password = "your_password";
-$dbname = "your_database_name";
 
 
 
@@ -101,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 icon: "error",
                 button: "Done",
             }).then(function() {
-             window.history.back();
-             });
+                            window.location.href = "../index.php?tag=scan";
+                        });
         });
         </script>
     ';
@@ -133,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 icon: "success",
                 button: "Done",
             }).then(function() {
-             window.history.back();
-             });
+                            window.location.href = "../index.php?tag=scan";
+                        });
         });
         </script>
     ';

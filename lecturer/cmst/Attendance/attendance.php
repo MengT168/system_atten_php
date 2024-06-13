@@ -566,7 +566,7 @@ if(isset($_POST['serach_atten'])) {
             $sqlAttendanceCheck = "SELECT * FROM attendance_tbl 
                         INNER JOIN studentstatus_tbl ON attendance_tbl.StudentStatusID = studentstatus_tbl.StudentStatusID
                         INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
-                        INNER JOIN sex_tbl ON studentinfo_tbl.SexID = sex_tbl.SexID WHERE DateIssue = '$date'";
+                        INNER JOIN sex_tbl ON studentinfo_tbl.SexID = sex_tbl.SexID WHERE DateIssue = '$date' AND studentstatus_tbl.ProgramID = $program";
             $resultAttendanceCheck = $conn->query($sqlAttendanceCheck);
         
           
