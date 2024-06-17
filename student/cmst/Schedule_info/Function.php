@@ -351,11 +351,12 @@ Insert();
     }
     function getProgram(){
         global $conn;
-        $id="";
-        if(isset($_GET[ 'id']))
-        $id=$_GET['id'];
-        $sql = "SELECT * FROM program_tbl 
-        INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
+        $id = $_SESSION['idS'];
+        
+        $sql = "SELECT * FROM `studentstatus_tbl` 
+INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
+INNER JOIN program_tbl ON studentstatus_tbl.ProgramID = program_tbl.ProgramID
+ INNER JOIN faculty_tbl ON program_tbl.FacultyID = faculty_tbl.FacultyID
         INNER JOIN major_tbl ON program_tbl.MajorID = major_tbl.MajorID
         INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
         INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
@@ -363,7 +364,9 @@ Insert();
         INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
         INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
         INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
-        INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID ";
+        INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID
+        WHERE studentinfo_tbl.StudentID =$id
+        ";
         $exec = mysqli_query($conn, $sql);
         while ($rw = mysqli_fetch_array($exec)) {
             $ProgramID= $rw['ProgramID'];
@@ -382,7 +385,6 @@ Insert();
                 ';
         }
     }
-
     
     
 ?>

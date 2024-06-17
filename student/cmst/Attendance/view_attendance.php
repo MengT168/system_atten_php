@@ -427,10 +427,18 @@ if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GE
     if (isset($_SESSION['idS']))
     $stuId = $_SESSION['idS'];
 
-    $sql_status = "SELECT * FROM `studentstatus_tbl` WHERE StudentID=$stuId";
-    $rss = $conn->query($sql_status);
-    $rows = mysqli_fetch_assoc($rss);
-    $statusId = $rows['StudentStatusID'];
+    $sql_status = "SELECT StudentStatusID FROM `studentstatus_tbl` WHERE StudentID=$stuId";
+$rss = $conn->query($sql_status);
+
+// Initialize an array to hold all StudentStatusID values
+$statusIds = [];
+
+while ($row = mysqli_fetch_assoc($rss)) {
+    $statusIds[] = $row['StudentStatusID'];
+}
+
+// Convert the array of status IDs to a comma-separated string
+$statusIdsStr = implode(',', $statusIds);
 
     if (isset($_GET['lectid']))
         $lectid = $_GET['lectid'];
@@ -467,12 +475,14 @@ if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GE
             </thead>
             <tbody>
                 <?php
-                $sql_att = "SELECT * FROM `attendance_tbl` 
-                    INNER JOIN lecturer_tbl ON attendance_tbl.LecturerID = lecturer_tbl.LecturerID
-                    INNER JOIN subject_tbl ON attendance_tbl.SubjectID = subject_tbl.SubjectID
-                    INNER JOIN studentstatus_tbl ON attendance_tbl.StudentStatusID = studentstatus_tbl.StudentStatusID
-                    INNER JOIN program_tbl ON studentstatus_tbl.ProgramID = program_tbl.ProgramID
-                    WHERE attendance_tbl.LecturerID=$lectid AND attendance_tbl.StudentStatusID=$statusId ";
+                $sql_att = "SELECT *
+                    FROM `attendance_tbl`
+                    INNER JOIN `lecturer_tbl` ON `attendance_tbl`.`LecturerID` = `lecturer_tbl`.`LecturerID`
+                    INNER JOIN `subject_tbl` ON `attendance_tbl`.`SubjectID` = `subject_tbl`.`SubjectID`
+                    INNER JOIN `studentstatus_tbl` ON `attendance_tbl`.`StudentStatusID` = `studentstatus_tbl`.`StudentStatusID`
+                    INNER JOIN `program_tbl` ON `studentstatus_tbl`.`ProgramID` = `program_tbl`.`ProgramID`
+                    WHERE `attendance_tbl`.`LecturerID` = $lectid
+                    AND `attendance_tbl`.`StudentStatusID` IN ($statusIdsStr)";
 
                 $rs_list = $conn->query($sql_att);
                 while ($rows = mysqli_fetch_assoc($rs_list)) {

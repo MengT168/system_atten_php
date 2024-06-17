@@ -193,11 +193,11 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
           <i class="bi bi-layout-text-window-reverse"></i><span>Schedule</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="?tag=new_schedule">
               <i class="bi bi-circle"></i><span>Create Schedule</span>
             </a>
-          </li>
+          </li> -->
           <li>
             <a href="?tag=view_schedule">
               <i class="bi bi-circle"></i><span>View Lecturer Schedule</span>

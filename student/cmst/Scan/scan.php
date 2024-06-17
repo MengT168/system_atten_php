@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $checkResult = $checkStmt->get_result();
     $checkRow = $checkResult->fetch_assoc();
 
-    if ($checkRow['count'] >= 2) {
+    if ($checkRow['count'] > 2) {
         $response = "You have already scanned twice today.";
         echo '
         <script>

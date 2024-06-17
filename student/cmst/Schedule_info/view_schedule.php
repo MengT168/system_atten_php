@@ -134,10 +134,63 @@
 }
     </style>
 <body>
-</body>
+<main id="main" class="main">
+       
+       <section class="section">
+           <div class="row">
+               <div class="col-lg-10">
+                   <div class="card">
+                       <div class="card-body">
+                           <h5 class="card-title">Schedule</h5>
 
+                           <div class="row g-2">
+                           <div class="col-3">
+                               <label class="form-label">Program</label>
+                               <select id="program" name="academicpro" class="form-select">
+                                   <option value="">Select One</option>
+                                   <?php getProgram(); ?>
+                               </select>
+                           </div>
+                           
+                           <div class="col-2">
+                               <a id="searchBtn" style="margin-top: 30px;" href="#" class="btn btn-primary">Search</a>
+                           </div>
+                       </div>
+                           
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+   </main>
+</body>
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function(event) {
+        event.preventDefault(); 
+
+        // Get the selected values
+        var program = document.getElementById('program').value;
+        
+        // Construct the URL with the selected values
+        var url = '?tag=schedule&op=search';
+        url += '&program=' + encodeURIComponent(program);
+        
+        window.location.href = url;
+    });
+</script>
 
 </html>
+<?php
+if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GET['tag'] == 'schedule') {
+    $program = "";
+    if (isset($_SESSION['idL']))
+    $id = $_SESSION['idL'];
+
+    if (isset($_GET['program']))
+        $program = $_GET['program'];
+    
+       
+?>
 
 <?php
 
@@ -145,12 +198,12 @@
         $sqlprogram = "SELECT * FROM studentstatus_tbl WHERE StudentID = $studentID"; 
         $rs = $conn->query($sqlprogram);
         $row = mysqli_fetch_assoc($rs);
-        $programID = $row['ProgramID'];
+        // $programID = $row['ProgramID'];
 
 
         $shiftCheckSql = "SELECT shift_tbl.shiftEN FROM program_tbl
         INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID
-        WHERE program_tbl.ProgramID = $programID AND shift_tbl.shiftEN = 'Morning'";
+        WHERE program_tbl.ProgramID = $program AND shift_tbl.shiftEN = 'Morning'";
 $shiftCheckResult = $conn->query($shiftCheckSql);
 
 if ($shiftCheckResult->num_rows > 0) {
@@ -171,7 +224,7 @@ INNER JOIN lecturer_tbl ON schedule_tbl.LecturerID = lecturer_tbl.LecturerID
 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-WHERE ProgramID = $programID AND DayWeekName ='Monday'";
+WHERE ProgramID = $program AND DayWeekName ='Monday'";
 $rs1 = $conn->query($sql);
 
 // Check if there are any results for the schedule query
@@ -193,7 +246,7 @@ INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
 INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
 INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
 INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID 
-WHERE ProgramID='$programID'";
+WHERE ProgramID='$program'";
 $rs = $conn->query($sql_Pro);
 
 // Check if there are any results for the program query
@@ -222,7 +275,7 @@ if ($rs && $rs->num_rows > 0) {
     }
 }
 ?>
-
+ 
                             <!-- Schedule -->
                             <div class="container">
                                 <div class="timetable-img text-center">
@@ -253,7 +306,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Monday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Monday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -271,7 +324,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Tuesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Tuesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -289,7 +342,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Wednesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Wednesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -307,7 +360,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Thursday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Thursday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -325,7 +378,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Friday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Friday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -376,7 +429,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Monday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Monday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -394,7 +447,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Tuesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Tuesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -412,7 +465,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Wednesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Wednesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -430,7 +483,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Thursday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Thursday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -448,7 +501,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Friday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Friday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -477,7 +530,7 @@ if ($rs && $rs->num_rows > 0) {
     }  
     $shiftCheckSql = "SELECT shift_tbl.shiftEN FROM program_tbl
     INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID
-    WHERE program_tbl.ProgramID = $programID AND shift_tbl.shiftEN = 'Afternoon'";
+    WHERE program_tbl.ProgramID = $program AND shift_tbl.shiftEN = 'Afternoon'";
 $shiftCheckResult = $conn->query($shiftCheckSql);
     if($shiftCheckResult->num_rows > 0) {
 ?>
@@ -497,7 +550,7 @@ INNER JOIN lecturer_tbl ON schedule_tbl.LecturerID = lecturer_tbl.LecturerID
 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-WHERE ProgramID = $programID AND DayWeekName ='Monday'";
+WHERE ProgramID = $program AND DayWeekName ='Monday'";
 $rs1 = $conn->query($sql);
 
 // Check if there are any results for the schedule query
@@ -519,7 +572,7 @@ INNER JOIN batch_tbl ON program_tbl.BatchID = batch_tbl.BatchID
 INNER JOIN campus_tbl ON program_tbl.CampusID = campus_tbl.CampusID
 INNER JOIN degree_tbl ON program_tbl.DegreeID = degree_tbl.DegreeID
 INNER JOIN shift_tbl ON program_tbl.ShiftID = shift_tbl.ShiftID 
-WHERE ProgramID='$programID'";
+WHERE ProgramID='$program'";
 $rs = $conn->query($sql_Pro);
 
 // Check if there are any results for the program query
@@ -579,7 +632,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Monday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Monday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -597,7 +650,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Tuesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Tuesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -615,7 +668,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Wednesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Wednesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -633,7 +686,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Thursday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Thursday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -651,7 +704,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Friday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Friday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -702,7 +755,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Monday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Monday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -720,7 +773,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Tuesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Tuesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -738,7 +791,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Wednesday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Wednesday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -756,7 +809,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Thursday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Thursday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -774,7 +827,7 @@ if ($rs && $rs->num_rows > 0) {
                                                 INNER JOIN dayweek_tbl ON schedule_tbl.DayWeekID = dayweek_tbl.DayWeekID 
                                                 INNER JOIN room_tbl ON schedule_tbl.RoomID = room_tbl.RoomID
                                                 INNER JOIN campus_tbl ON room_tbl.CampusID = campus_tbl.CampusID
-                                                WHERE ProgramID = $programID AND DayWeekName ='Friday' ";
+                                                WHERE ProgramID = $program AND DayWeekName ='Friday' ";
                                                 $rs=$conn->query($sql);
                                                 while($rw = mysqli_fetch_assoc($rs)){
                                             ?>
@@ -801,7 +854,7 @@ if ($rs && $rs->num_rows > 0) {
 <?php
 }
 
-
+}
 
 
 
