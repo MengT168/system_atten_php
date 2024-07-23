@@ -86,6 +86,21 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+        .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+        .nav-link.active {
+            background-color: cyan;
+            color: #fff;
+        }
+    </style>
 
     <!-- =======================================================
   * Template Name: NiceAdmin
@@ -186,94 +201,26 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true ) {
         </li>
         <!-- End Dashboard Nav -->
 
+        
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#components-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-menu-button-wide"></i><span>Schedule</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="components-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=schedule">
-                <i class="bi bi-circle"></i><span>View Schedule</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <a class="nav-link" href="?tag=schedule">
+        <i class="fa-solid fa-calendar-days"></i><span>Schedule</span>
+        </a>
+      </li>
         <!-- End Components Nav -->
+        
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#forms-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-journal-text"></i><span>Attendance</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="forms-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=attendance">
-                <i class="bi bi-circle"></i><span>Attendance</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <a class="nav-link" href="?tag=attendance">
+        <i class="fa-solid fa-clipboard-user"></i><span>Attendance</span>
+        </a>
+      </li>
 
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#tables-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-layout-text-window-reverse"></i><span>Scan Attendance</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="tables-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=qrcode">
-                <i class="bi bi-circle"></i><span>Scan Here</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+       
         
         <!-- End Components Nav -->
       </ul>
     </aside>
-    <!-- End Sidebar-->
-
     
-    <!-- End #main -->
-
-    <!-- ======= Footer ======= -->
-    <!-- <footer id="footer" class="footer">
-      <div class="copyright">
-        &copy; Copyright <strong><span>NiceAdmin</span></strong
-        >. All Rights Reserved
-      </div>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </footer> -->
@@ -326,7 +273,26 @@ else{
 ?>
             </div>
 
+            <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navLinks = document.querySelectorAll('.nav-link');
 
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Optionally, set the active class based on the current URL
+            const currentUrl = window.location.href;
+            navLinks.forEach(link => {
+                if (link.href === currentUrl) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
   </body>
 </html>
 

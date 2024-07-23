@@ -69,36 +69,38 @@ if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GE
         while ($row = mysqli_fetch_assoc($fetchResult)) {
             $studentID = $row['StudentID'];
 
-            $checkQuery = "SELECT * FROM studentstatus_tbl WHERE StudentID = '$studentID' AND ProgramID = '$targetProgramID'";
-            $checkResult = mysqli_query($conn, $checkQuery);
-            if (mysqli_num_rows($checkResult) == 0) {
-                $insertQuery = "INSERT INTO studentstatus_tbl (StudentID, ProgramID, Assigned, Note, AssignDate) VALUES ('$studentID', '$targetProgramID', '$assigned', '$note', '$assignDate')";
-                if (!mysqli_query($conn, $insertQuery)) {
-                    echo '
-                    <script>
-                    $(document).ready(function(){
-                        swal({
-                            title: "Error!",
-                            text: "Failed to insert records: ' . mysqli_error($conn) . '",
-                            icon: "error",
-                            button: "Ok",
+            if (isset($_POST['check_' . $studentID])) {
+                $checkQuery = "SELECT * FROM studentstatus_tbl WHERE StudentID = '$studentID' AND ProgramID = '$targetProgramID'";
+                $checkResult = mysqli_query($conn, $checkQuery);
+                if (mysqli_num_rows($checkResult) == 0) {
+                    $insertQuery = "INSERT INTO studentstatus_tbl (StudentID, ProgramID, Assigned, Note, AssignDate) VALUES ('$studentID', '$targetProgramID', '$assigned', '$note', '$assignDate')";
+                    if (!mysqli_query($conn, $insertQuery)) {
+                        echo '
+                        <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Error!",
+                                text: "Failed to insert records: ' . mysqli_error($conn) . '",
+                                icon: "error",
+                                button: "Ok",
+                            });
                         });
-                    });
-                    </script>
-                    ';
-                } else {
-                    echo '
-                    <script>
-                    $(document).ready(function(){
-                        swal({
-                            title: "Success!",
-                            text: "Records inserted successfully",
-                            icon: "success",
-                            button: "Done",
+                        </script>
+                        ';
+                    } else {
+                        echo '
+                        <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Success!",
+                                text: "Records inserted successfully",
+                                icon: "success",
+                                button: "Done",
+                            });
                         });
-                    });
-                    </script>
-                    ';
+                        </script>
+                        ';
+                    }
                 }
             }
         }
@@ -138,6 +140,7 @@ if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GE
                                         <th scope="col">Assigned</th>
                                         <th scope="col">Note</th>
                                         <th scope="col">AssignDate</th>
+                                        <th scope="col">Check</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,6 +158,7 @@ if (isset($_GET['op']) && $_GET['op'] == 'search' && isset($_GET['tag']) && $_GE
                                         <td><input class="form-control" type="text" name="assign" value="<?php echo $row["Assigned"]; ?>"></td>
                                         <td><input class="form-control" type="text" name="note" value="<?php echo $row["Note"]; ?>"></td>
                                         <td><?php echo $row["AssignDate"]; ?></td>
+                                        <td><input type="checkbox" class="form-check" name="check_<?php echo $row["StudentID"]; ?>" checked ></td>
                                     </tr>
                                     <?php
                                 }

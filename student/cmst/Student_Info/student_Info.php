@@ -472,7 +472,7 @@
             <div class="tab-pane fade pt-3" id="profile-change-password">
             <h5 class="card-title">Profile Details</h5>
                 <?php
-                 $Id = $_SESSION['id'];
+                 $Id = $_SESSION['idS'];
                 
              $sql="SELECT * FROM familybackground_tbl
              INNER JOIN country_tbl on familybackground_tbl.FatherCountryID = country_tbl.CountryID

@@ -19,7 +19,7 @@
             $_SESSION['idL']= $user_row['LecturerID'];
             $_SESSION['uname']= $uname;
             $_SESSION['log'] = true;
-            header("Location: ../lecturer/cmst/index.php");
+            header("Location: ../lecturer/cmst/index.php?das=dashboard");
  
         }
         else{

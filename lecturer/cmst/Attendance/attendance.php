@@ -530,12 +530,12 @@ if ($rs && $rs->num_rows > 0) {
 }
 ?>
                             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container"  >
+                            <div class="container"  >
 <div class="row">
 	<div class="col-lg-9">
 		<div class="main-box clearfix">
         <div class="table-responsive">
-    <form method="post" enctype="multipart/form-data">
+    
         <table class="table user-list">
             <thead>
                 <tr>
@@ -548,11 +548,11 @@ if ($rs && $rs->num_rows > 0) {
                 </tr>
             </thead>
             <tbody>
+            <form method="post" enctype="multipart/form-data">
             <?php
 if(isset($_POST['serach_atten'])) {
     $date = $_POST['search_date'];
     if($date != '') {
-        // Assuming $program and $id are defined somewhere in your code
 
         $sqlSt = "SELECT * FROM studentstatus_tbl WHERE ProgramID = $program";
         $rss= $conn->query($sqlSt);
@@ -566,7 +566,9 @@ if(isset($_POST['serach_atten'])) {
             $sqlAttendanceCheck = "SELECT * FROM attendance_tbl 
                         INNER JOIN studentstatus_tbl ON attendance_tbl.StudentStatusID = studentstatus_tbl.StudentStatusID
                         INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
-                        INNER JOIN sex_tbl ON studentinfo_tbl.SexID = sex_tbl.SexID WHERE DateIssue = '$date' AND studentstatus_tbl.ProgramID = $program";
+                        INNER JOIN sex_tbl ON studentinfo_tbl.SexID = sex_tbl.SexID WHERE AttendanceDateIssue = '$date' AND studentstatus_tbl.ProgramID = $program
+                        ORDER BY attendance_tbl.AttendanceID DESC
+                        ";
             $resultAttendanceCheck = $conn->query($sqlAttendanceCheck);
         
           
@@ -578,46 +580,37 @@ if(isset($_POST['serach_atten'])) {
 
 
 <tr>
-    <td>
-        <img src="../../image/<?php echo $rowAttendance['Photo']; ?>" alt="Profile" class="rounded-circle" />
-        <a href="#" class="user-link"><?php echo $rowAttendance['NameInLatin']; ?></a>
-        <span class="user-subhead">Student</span>
-    </td>
-    <td><?php echo $rowAttendance['SexEN']; ?></td>
-    <td>
-        <input type="text" name="note[<?php echo $statusID; ?>]" value="<?php echo $rowAttendance['AttendNote'] ?>" class="form-control" placeholder="Attendance Note">
-    </td>
-    <td>
-       
-    <input type="checkbox" name="section[<?php echo $statusID; ?>]" <?php if ($rowAttendance['Section'] == 1) echo "checked"; ?> value="1">
-       
-        <label for="">1</label>
-        
-        <input type="checkbox" name="section[<?php echo $statusID; ?>]" <?php if ($rowAttendance['Section'] == 2) echo "checked"; ?> value="2">
-        <label for="">2</label>
-    </td>
-    <td style="width: 20%;">
-        <input type="checkbox" name="status[<?php echo $statusID; ?>][S]" <?php if ($rowAttendance['Attended'] == 1) echo "checked"; ?> value="1">
-        <label for="">S</label>
-        <input type="checkbox" name="status[<?php echo $statusID; ?>][P]" <?php if ($rowAttendance['Attended'] == 2) echo "checked"; ?> value="2">
-        <label for="">P</label>
-        <input type="checkbox" name="status[<?php echo $statusID; ?>][A]" <?php if ($rowAttendance['Attended'] == 3) echo "checked"; ?> value="3">
-        <label for="">A</label>
-    </td>
-    <td>
-        <p><?php echo $rowAttendance['DateIssue'] ?></p>
-    </td>
-</tr>
-
-                                
-
-
-
-
-
-
+                            <td>
+                                <img src="../../image/<?php echo $rowAttendance['Photo']; ?>" alt="Profile" class="rounded-circle" />
+                                <a href="#" class="user-link"><?php echo $rowAttendance['NameInLatin']; ?></a>
+                                <span class="user-subhead">Student</span>
+                            </td>
+                            <td><?php echo $rowAttendance['SexEN']; ?></td>
+                            <td>
+                                <input type="text" name="note[<?php echo $rowAttendance['AttendanceID']; ?>]" value="<?php echo $rowAttendance['AttendNote']; ?>" class="form-control" placeholder="Attendance Note">
+                            </td>
+                            <td>
+                                <input type="checkbox" name="section[<?php echo $rowAttendance['AttendanceID']; ?>][]" <?php if ($rowAttendance['Section'] == 1) echo "checked"; ?> value="1">
+                                <label for="">1</label>
+                                <input type="checkbox" name="section[<?php echo $rowAttendance['AttendanceID']; ?>][]" <?php if ($rowAttendance['Section'] == 2) echo "checked"; ?> value="2">
+                                <label for="">2</label>
+                            </td>
+                            <td style="width: 20%;">
+                                <input type="checkbox" name="status[<?php echo $rowAttendance['AttendanceID']; ?>][C]" <?php if ($rowAttendance['Attended'] == 1) echo "checked"; ?> value="1">
+                                <label for="">C</label>
+                                <input type="checkbox" name="status[<?php echo $rowAttendance['AttendanceID']; ?>][P]" <?php if ($rowAttendance['Attended'] == 2) echo "checked"; ?> value="2">
+                                <label for="">P</label>
+                                <input type="checkbox" name="status[<?php echo $rowAttendance['AttendanceID']; ?>][A]" <?php if ($rowAttendance['Attended'] == 3) echo "checked"; ?> value="3">
+                                <label for="">A</label>
+                            </td>
+                            <td>
+                                <p><?php echo $rowAttendance['DateIssue']; ?></p>
+                            </td>
+                            <td>
+                                <input type="hidden" value="<?php echo $rowAttendance['AttendanceID']; ?>" name="AD[<?php echo $rowAttendance['AttendanceID']; ?>]">
+                            </td>
+                        </tr>
 </tbody>
-
                             <?php
                              }
                             } 
@@ -626,10 +619,15 @@ if(isset($_POST['serach_atten'])) {
                                     
                             }
                             
-                        }
+                        ?>
+                        <button class="btn btn-primary mx-2" style="float: right;" name="btn_up">Update</button>
+    </form>
                         
+                        <?php
+}
                         else{
                             ?>
+                            <form method="post" enctype="multipart/form-data">
                                 <tbody>
                 <?php
                 $sql_att = "SELECT *
@@ -649,8 +647,8 @@ if(isset($_POST['serach_atten'])) {
 
                 $rs_list = $conn->query($sql_att);
                 while ($rows = mysqli_fetch_assoc($rs_list)) {
-                    $studentStatusID = $rows['StudentStatusID']; // Assuming StudentStatusID is a column in studentstatus_tbl
-                    $subjectID1 = $rows['SubjectID']; // Assuming SubjectID is a column in schedule_tbl
+                    $studentStatusID = $rows['StudentStatusID']; 
+                    $subjectID1 = $rows['SubjectID']; 
                 ?>
                     <tr>
                         <td>
@@ -661,20 +659,43 @@ if(isset($_POST['serach_atten'])) {
                         <td><?php echo $rows['SexEN']; ?></td>
                         <td>
                         <div style="display: flex; justify-content: space-between;" class="checkbox-list">
-                                <div>
-                                    <input type="text" name="note[<?php echo $studentStatusID; ?>]" class="form-control" placeholder="Attendance Note" >
-                                    <!-- <label for="">1</label> -->
-                                </div>
-                            </div>
+    <!-- <div>
+        <input type="text" name="note[<?php echo $studentStatusID; ?>]" class="form-control" placeholder="Attendance Note" >
+    </div> -->
+    <?php
+        $sqlCount = "
+        SELECT 
+            StudentStatusID,
+            LecturerID,
+            SubjectID,
+            SUM(CASE WHEN Attended = 1 THEN 1 ELSE 0 END) AS C,
+            SUM(CASE WHEN Attended = 2 THEN 1 ELSE 0 END) AS P,
+            SUM(CASE WHEN Attended = 3 THEN 1 ELSE 0 END) AS A
+        FROM attendance_tbl
+        WHERE StudentStatusID = $studentStatusID
+        GROUP BY StudentStatusID, LecturerID, SubjectID;
+        ";
+
+        // Execute the query
+        $resultCount = $conn->query($sqlCount);
+        $C = $P = $A = 0; // Default values
+        if ($resultCount && $row = $resultCount->fetch_assoc()) {
+            $C = isset($row['C']) ? $row['C'] : 0;
+            $P = isset($row['P']) ? $row['P'] : 0;
+            $A = isset($row['A']) ? $row['A'] : 0;
+        }
+    ?>
+    (C = <?php echo $C ?> / P = <?php echo $P ?> / A = <?php echo $A ?> )
+</div>
                         </td>
                         <td>
                             <div style="display: flex; justify-content: space-between;" class="checkbox-list">
                                 <div>
-                                    <input type="checkbox" name="section[<?php echo $studentStatusID; ?>]" value="1">
+                                    <input type="checkbox" name="section[<?php echo $studentStatusID; ?>]" value="1" checked >
                                     <label for="">1</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" name="section[<?php echo $studentStatusID; ?>]" value="2">
+                                    <input type="checkbox" name="section[<?php echo $studentStatusID; ?>]" value="2" checked >
                                     <label for="">2</label>
                                 </div>
                             </div>
@@ -682,8 +703,8 @@ if(isset($_POST['serach_atten'])) {
                         <td style="width: 20%;">
                             <div style="display: flex; justify-content: space-between;" class="checkbox-list">
                                 <div>
-                                    <input type="checkbox" name="status[<?php echo $studentStatusID; ?>][S]" value="1">
-                                    <label for="">S</label>
+                                    <input type="checkbox" name="status[<?php echo $studentStatusID; ?>][C]" value="1" checked >
+                                    <label for="">C</label>
                                 </div>
                                 <div>
                                     <input type="checkbox" name="status[<?php echo $studentStatusID; ?>][P]" value="2">
@@ -698,12 +719,11 @@ if(isset($_POST['serach_atten'])) {
                     </tr>
                 <?php } ?>
             </tbody>
-            <button class="btn btn-primary" style="float: right;" name="btn_sub">Submit</button>
+            <button  class="btn btn-primary" style="float: right;" name="btn_sub">Submit</button>
+            
                             <?php } ?>
-           
+                            </form>
         </table>
-        
-    </form>
 </div>
 		</div>
 	</div>
@@ -730,16 +750,12 @@ if(isset($_POST['serach_atten'])) {
             $SubjectID = $row['SubjectID'];
             $ProgramID = $row['ProgramID'];
 
-            // Concatenate the data to store in the QR code, ensuring it is URL-safe
             $qrData = "LecturerID=$LecturerID&SubjectID=$SubjectID&ProgramID=$ProgramID";
 
-            // Encode the data to make it URL-safe
             $qrData = urlencode($qrData);
 
-            // Generate the ZXing URL for the QR code
             $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?data=$qrData&size=300x300";
 
-            // Display the QR code image with a margin-top style
             echo "<img src='$qrCodeUrl' style='margin-top: 10px;' alt='QR Code' />";
         } else {
             echo "No data found";
@@ -762,109 +778,63 @@ if(isset($_POST['serach_atten'])) {
 }
 ?>
 
+
+
+
 <?php
 
-    if (isset($_POST['btn_sub'])) {
-        $attendanceDateIssue = date("Y-m-d"); // Current date or a specific date if needed
-        $lecturerID = $id; // Assuming $id contains the lecturer's ID
-        $subjectID = $subjectID1; // Set this value from your data context
-        $success = true;
-        foreach ($_POST['status'] as $studentStatusID => $statuses) {
-            foreach ($statuses as $statusType => $attended) {
-                $attendNote = isset($_POST['note'][$studentStatusID]) ? $_POST['note'][$studentStatusID] : '';
-                $section = isset($_POST['section'][$studentStatusID]) ? $_POST['section'][$studentStatusID] : ''; // Retrieve section if checkbox is checked
-                $dateIssue = date("Y-m-d"); // Current date and time
-    
-                // Insert attendance record into attendance_tbl
-                $sql_insert = "INSERT INTO attendance_tbl (StudentStatusID, AttendanceDateIssue, SubjectID, Attended, AttendNote, Section, LecturerID, DateIssue)
-                               VALUES ('$studentStatusID', '$attendanceDateIssue', '$subjectID', '$attended', '$attendNote', '$section', '$lecturerID', '$dateIssue')";
-    
-                if(!$conn->query($sql_insert)){
-                    $success = false;
-                }
-            }
-        }
-    
-    if ($success) {
-        echo '
-        <script>
-        $(document).ready(function(){
-            swal({
-                title: "Success!",
-                text: "Set Attendance Success .",
-                icon: "success",
-                button: "Done",
-            }).then(function(){
-                window.location.href = window.location.href;
-            });
-        });
-        </script>
-      ';
-    } else {
-        echo '
-                      <script>
-                      $(document).ready(function(){
-                          swal({
-                              title: "Error!",
-                              text: "Set Attendance Success .",
-                              icon: "error",
-                              button: "Done",
-                          });
-                      });
-                      </script>
-                    ';
-    }
-    }
-    
-?>
-<?php
-// Assuming you have established your database connection earlier
-// Assuming $conn is your database connection
-
-if (isset($_POST['btn_up'])) {
-    $attendanceDateIssue = date("Y-m-d"); // Current date or a specific date if needed
-    $lecturerID = $id; // Assuming $id contains the lecturer's ID
-    $subjectID = $subjectID1; // Set this value from your data context
+if (isset($_POST['btn_sub'])) {
+    date_default_timezone_set('Asia/Phnom_Penh');
+    $attendanceDateIssue = date("Y-m-d"); 
+    $lecturerID = $id; 
+    $subjectID = $subjectID1; 
     $success = true;
-    
-    foreach ($_POST['status'] as $statusID => $statuses) {
+
+    foreach ($_POST['status'] as $studentStatusID => $statuses) {
         foreach ($statuses as $statusType => $attended) {
-            $attendNote = isset($_POST['note'][$statusID]) ? $_POST['note'][$statusID] : '';
-            $section = isset($_POST['section'][$statusID]) ? $_POST['section'][$statusID] : ''; // Retrieve section if checkbox is checked
-            $dateIssue = date("Y-m-d"); // Current date and time
-    
-            // Check if record already exists in attendance_tbl
-            $sql_select = "SELECT * FROM attendance_tbl WHERE StudentStatusID = $statusID";
-            $result = $conn->query($sql_select);
-    
-            if ($result->num_rows > 0) {
-                // If record exists, perform an update query
-                $sql_update = "UPDATE attendance_tbl 
-                               SET AttendanceDateIssue = '$attendanceDateIssue', 
-                                   SubjectID = '$subjectID', 
-                                   Attended = '$attended', 
-                                   AttendNote = '$attendNote', 
-                                   Section = '$section', 
-                                   LecturerID = '$lecturerID', 
-                                   DateIssue = '$dateIssue'
-                               WHERE StudentStatusID = $statusID";
-    
-                if (!$conn->query($sql_update)) {
-                    $success = false;
-                }
+            $attendNote = isset($_POST['note'][$studentStatusID]) ? $_POST['note'][$studentStatusID] : '';
+            $section = isset($_POST['section'][$studentStatusID]) ? $_POST['section'][$studentStatusID] : '';
+
+            date_default_timezone_set('Asia/Phnom_Penh');
+            $dateIssue = new DateTime(); 
+            $dateIssueFormatted = $dateIssue->format('Y-m-d H:i:s');
+
+            $sql_check = "SELECT Section FROM attendance_tbl WHERE StudentStatusID=? AND AttendanceDateIssue=?";
+            $stmt = $conn->prepare($sql_check);
+            $stmt->bind_param("is", $studentStatusID, $attendanceDateIssue);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows >= 2) {
+                $success = false;
+                continue;
+            }
+
+            if ($result->num_rows == 1) {
+                $row = $result->fetch_assoc();
+                $section = ($row['Section'] == 1) ? 2 : 1;
             } else {
-                // No need to insert if record doesn't exist, remove insert code
+                $section = 1;
+            }
+
+            $sql_insert = "INSERT INTO attendance_tbl (StudentStatusID, AttendanceDateIssue, SubjectID, Attended, AttendNote, Section, LecturerID, DateIssue)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt_insert = $conn->prepare($sql_insert);
+            $stmt_insert->bind_param("ississis", $studentStatusID, $attendanceDateIssue, $subjectID, $attended, $attendNote, $section, $lecturerID, $dateIssueFormatted);
+
+            if (!$stmt_insert->execute()) {
+                $success = false;
             }
         }
     }
-    
+
     if ($success) {
         echo '
         <script>
         $(document).ready(function(){
             swal({
                 title: "Success!",
-                text: "Set Attendance Success .",
+                text: "Set Attendance Success.",
                 icon: "success",
                 button: "Done",
             }).then(function(){
@@ -879,13 +849,70 @@ if (isset($_POST['btn_up'])) {
         $(document).ready(function(){
             swal({
                 title: "Error!",
-                text: "Error updating attendance records.",
+                text: "Set Attendance Failed.",
                 icon: "error",
                 button: "Done",
             });
         });
         </script>
       ';
+    }
+}
+
+?>
+
+<?php
+if (isset($_POST['btn_up'])) {
+    $success = true;
+
+    foreach ($_POST['AD'] as $attendanceID => $value) {
+        $attended = null;
+        if (isset($_POST['status'][$attendanceID]['C'])) {
+            $attended = 1;
+        } elseif (isset($_POST['status'][$attendanceID]['P'])) {
+            $attended = 2;
+        } elseif (isset($_POST['status'][$attendanceID]['A'])) {
+            $attended = 3;
+        }
+
+        $note = $_POST['note'][$attendanceID];
+        $section = isset($_POST['section'][$attendanceID]) ? implode(',', $_POST['section'][$attendanceID]) : '';
+
+        $sql_update = "UPDATE attendance_tbl SET Attended=?, AttendNote=?, Section=? WHERE AttendanceID=?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("issi", $attended, $note, $section, $attendanceID);
+
+        if (!$stmt_update->execute()) {
+            $success = false;
+        }
+    }
+
+    if ($success) {
+        echo '
+        <script>
+        $(document).ready(function(){
+            swal({
+                title: "Success!",
+                text: "Set Attendance Success.",
+                icon: "success",
+                button: "Done",
+            }).then(function(){
+                window.location.href = window.location.href;
+            });
+        });
+        </script>';
+    } else {
+        echo '
+        <script>
+        $(document).ready(function(){
+            swal({
+                title: "Error!",
+                text: "Set Attendance Failed.",
+                icon: "error",
+                button: "Done",
+            });
+        });
+        </script>';
     }
 }
 ?>

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <?php
 session_start();
 require("connect.php");
@@ -73,6 +74,20 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+        .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+        .nav-link.active {
+            background-color: cyan;
+            color: #fff;
+        }
+    </style>
 
 </head>
 
@@ -150,54 +165,39 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
       </li>
       <!-- End Dashboard Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Manage Student</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <!-- <li>
-            <a href="?tag=new_stu">
-              <i class="bi bi-circle"></i><span>New Student</span>
-            </a>
-          </li> -->
-          <li>
-            <a href="?tag=list_stu">
-              <i class="bi bi-circle"></i><span>Student</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!-- End Components Nav -->
+      
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Manage Lecturer </span><i class="bi bi-chevron-down ms-auto"></i>
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tabl1" data-bs-toggle="collapse" href="#">
+        <i class="fa-solid fa-chalkboard-user" style="color: #B197FC;"></i><span>Student</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <!-- <li>
-            <a href="?tag=new_lecturer">
-              <i class="bi bi-circle"></i><span>New Lecturer</span>
-            </a>
-          </li> -->
+        <ul id="tabl1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="?tag=list_stu">
+          <i class="fa-solid fa-user" style="color: #B197FC;"></i><span>Student</span>
+          </a>
+        </li>
           <li>
-            <a href="?tag=list_lecturer">
-              <i class="bi bi-circle"></i><span>List Lecturer</span>
+            <a href="?tag=upload_stu">
+              <i class="bi bi-circle"></i><span>Upload Student</span>
             </a>
           </li>
         </ul>
       </li>
+
+      <!-- End Components Nav -->
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="?tag=list_lecturer">
+        <i class="fa-solid fa-chalkboard-user" style="color: #B197FC;"></i><span>Lecturer</span>
+        </a>
+      </li> -->
       <!-- End Forms Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Schedule</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="fa-solid fa-calendar-week" style="color: #B197FC;"></i><span>Schedule</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <!-- <li>
-            <a href="?tag=new_schedule">
-              <i class="bi bi-circle"></i><span>Create Schedule</span>
-            </a>
-          </li> -->
           <li>
             <a href="?tag=view_schedule">
               <i class="bi bi-circle"></i><span>View Lecturer Schedule</span>
@@ -212,21 +212,14 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav1" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Program</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link" href="?tag=list_program">
+        <i class="fa-solid fa-clipboard-list" style="color: #B197FC;"></i><span>Program</span>
         </a>
-        <ul id="tables-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="?tag=list_program">
-              <i class="bi bi-circle"></i><span>View Program</span>
-            </a>
-          </li>
-        </ul>
       </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-na" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Status</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="fa-solid fa-list-ul" style="color: #B197FC;"></i><span>Status</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-na" class="nav-content collapse" data-bs-parent="#sidebar-nav">
         <li>
@@ -243,160 +236,138 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-n" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Educational Background</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#tables" data-bs-toggle="collapse" href="#">
+        <i class="fa-solid fa-calendar-week" style="color: #B197FC;"></i><span>Absent Report</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="tables-n" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="?tag=educa">
-              <i class="bi bi-circle"></i><span>View</span>
+        <ul id="tables" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="?tag=class_stu_report">
+              <i class="bi bi-circle"></i><span>Student Absent By Class</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=major_stu_report">
+              <i class="bi bi-circle"></i><span>Student Absent By Major</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=shift_stu_report">
+              <i class="bi bi-circle"></i><span>Student Absent By Shift</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=campus_stu_report">
+              <i class="bi bi-circle"></i><span>Student Absent By Campus</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=faculty_stu_report">
+              <i class="bi bi-circle"></i><span>Student Absent By Faculty</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=batch_stu_report">
+              <i class="bi bi-circle"></i><span>Student Absent By Batch</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#table1" data-bs-toggle="collapse" href="#">
+        <i class="fa-solid fa-calendar-week" style="color: #B197FC;"></i><span>Attended Report</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="table1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="?tag=class_stu_report_atten">
+              <i class="bi bi-circle"></i><span>Student Attended By Class</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=major_stu_report_atten">
+              <i class="bi bi-circle"></i><span>Student Attended By Major</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=shift_stu_report_atten">
+              <i class="bi bi-circle"></i><span>Student Attended By Shift</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=campus_stu_report_atten">
+              <i class="bi bi-circle"></i><span>Student Attended By Campus</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=faculty_stu_report_atten">
+              <i class="bi bi-circle"></i><span>Student Attended By Faculty</span>
+            </a>
+          </li>
+          <li>
+            <a href="?tag=batch_stu_report_atten">
+              <i class="bi bi-circle"></i><span>Student Attended By Batch</span>
             </a>
           </li>
         </ul>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav12" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Attendace</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#tabl" data-bs-toggle="collapse" href="#">
+        <i class="fa-solid fa-calendar-week" style="color: #B197FC;"></i><span>Lecturer Report</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="tables-nav12" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="?tag=attendance">
-              <i class="bi bi-circle"></i><span>View Attendace</span>
+        <ul id="tabl" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="?tag=batch_lecturer_report">
+              <i class="bi bi-circle"></i><span>Lecturer Report By Batch</span>
             </a>
           </li>
+          <li>
+            <a href="?tag=faculty_lecturer_report">
+              <i class="bi bi-circle"></i><span>Lecturer Report By Faculty</span>
+            </a>
+          </li>
+          
         </ul>
       </li>
-      <!-- End Tables Nav -->
 
-      <!-- Main menu side bar for input -->
-
-      <!-- <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#faculty-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Manage School system</span><i class="bi bi-chevron-down ms-auto"></i>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#t" data-bs-toggle="collapse" href="#">
+        <i class="fa-solid fa-calendar-week" style="color: #B197FC;"></i><span>Report By Day</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="faculty-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="?tag=new_program">
-              <i class="bi bi-circle"></i><span>Create New Program</span>
+        <ul id="t" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="?tag=day_absent_stu">
+              <i class="bi bi-circle"></i><span>Student Absent</span>
             </a>
           </li>
           <li>
-            <a href="?tag=new_facult">
-              <i class="bi bi-circle"></i><span>Create New Faculty</span>
+            <a href="?tag=day_attended_stu">
+              <i class="bi bi-circle"></i><span>Student Attended</span>
             </a>
           </li>
-
-          <li>
-            <a href="?tag=new_major">
-              <i class="bi bi-circle"></i><span>Create New Major</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_sub">
-              <i class="bi bi-circle"></i><span>Create New Subject</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_dayweek">
-              <i class="bi bi-circle"></i><span>Create New Day Week</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_room">
-              <i class="bi bi-circle"></i><span>Create New Room</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_time">
-              <i class="bi bi-circle"></i><span>Create New Time</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_degree">
-              <i class="bi bi-circle"></i><span>Create New Degree</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_batch">
-              <i class="bi bi-circle"></i><span>Create New Batch</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_campus">
-              <i class="bi bi-circle"></i><span>Create New Campus</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_shift">
-              <i class="bi bi-circle"></i><span>Create New Shift</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_year">
-              <i class="bi bi-circle"></i><span>Create New Year</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_sex">
-              <i class="bi bi-circle"></i><span>Create New Gender</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_country">
-              <i class="bi bi-circle"></i><span>Create New Country</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_semester">
-              <i class="bi bi-circle"></i><span>Create New Semester</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_schooltype">
-              <i class="bi bi-circle"></i><span>Create New School Type</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_occupation">
-              <i class="bi bi-circle"></i><span>Create New Occupation</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_nationality">
-              <i class="bi bi-circle"></i><span>Create New Nationality</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_academicyear">
-              <i class="bi bi-circle"></i><span>Create New Academic Year</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="?tag=new_academicprogram">
-              <i class="bi bi-circle"></i><span>Create New Academic Program</span>
-            </a>
-          </li>
-
+          
         </ul>
-      </li> -->
+      </li>
+
+
+
+
+      
+      <li class="nav-item">
+        <a class="nav-link" href="?tag=attendance">
+        <i class="fa-solid fa-list-check" style="color: #B197FC;"></i><span>View Attendace</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="?tag=educa">
+        <i class="fa-solid fa-book" style="color: #B197FC;"></i><span>View Educational Background</span>
+        </a>
+      </li>
+      
 
       <!-- Main menu side bar for input-->
 
@@ -406,7 +377,7 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#Major-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>View List Management</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="fa-solid fa-list-check"></i><span>View List Management</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="Major-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
         
@@ -526,6 +497,7 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
 
         </ul>
       </li>
+      
 
       <!-- Main menu side bar for list show-->
 
@@ -711,10 +683,64 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
     elseif ($tag == "list_academicyear")
       include("Acadyear/list_academicyear.php");
 
+      // Absent Report
 
     elseif ($tag == "list_user")
       include("User/list_user.php");
 
+      elseif ($tag == "class_stu_report")
+      include("Report/report_stu_class.php");
+
+      elseif ($tag == "major_stu_report")
+      include("Report/report_stu_major.php");
+
+      elseif ($tag == "shift_stu_report")
+      include("Report/report_stu_shift.php");
+
+      elseif ($tag == "campus_stu_report")
+      include("Report/report_stu_campus.php");
+
+      elseif ($tag == "faculty_stu_report")
+      include("Report/report_stu_faculty.php");
+
+      elseif ($tag == "batch_stu_report")
+      include("Report/report_stu_batch.php");
+
+      //  Attended Report
+
+      elseif ($tag == "class_stu_report_atten")
+      include("Report-atten/report_stu_class.php");
+
+      elseif ($tag == "major_stu_report_atten")
+      include("Report-atten/report_stu_major.php");
+
+      elseif ($tag == "shift_stu_report_atten")
+      include("Report-atten/report_stu_shift.php");
+
+      elseif ($tag == "campus_stu_report_atten")
+      include("Report-atten/report_stu_campus.php");
+
+      elseif ($tag == "faculty_stu_report_atten")
+      include("Report-atten/report_stu_faculty.php");
+
+      elseif ($tag == "batch_stu_report_atten")
+      include("Report-atten/report_stu_batch.php");
+
+      elseif ($tag == "batch_lecturer_report")
+      include("Lect-report/batch-lect-report.php");
+
+      elseif ($tag == "faculty_lecturer_report")
+      include("Lect-report/faculty-lect-report.php");
+
+      elseif ($tag == "day_absent_stu")
+      include("Report-absent-stu-by-day/report_stu_absent.php");
+
+      elseif ($tag == "day_attended_stu")
+      include("Report-absent-stu-by-day/report_stu_attended.php");
+
+      elseif ($tag == "upload_stu")
+      include("Student/new_student.php");
+      
 
 
     else {
@@ -726,7 +752,26 @@ if (isset($_SESSION['ulog']) && $_SESSION['ulog'] == true) {
     ?>
   </div>
 
+  <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navLinks = document.querySelectorAll('.nav-link');
 
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Optionally, set the active class based on the current URL
+            const currentUrl = window.location.href;
+            navLinks.forEach(link => {
+                if (link.href === currentUrl) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

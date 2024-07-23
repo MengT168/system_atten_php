@@ -15,6 +15,8 @@ INNER JOIN schedule_tbl ON program_tbl.ProgramID = schedule_tbl.ProgramID
 INNER JOIN studentinfo_tbl ON studentstatus_tbl.StudentID = studentinfo_tbl.StudentID
 INNER JOIN subject_tbl ON schedule_tbl.SubjectID = subject_tbl.SubjectID
 INNER JOIN lecturer_tbl ON schedule_tbl.LecturerID = lecturer_tbl.LecturerID
+INNER JOIN year_tbl ON program_tbl.YearID = year_tbl.YearID
+INNER JOIN semester_tbl ON program_tbl.SemesterID = semester_tbl.SemesterID
         WHERE studentinfo_tbl.StudentID =$id
         ";
         $exec = mysqli_query($conn, $sql);
@@ -22,10 +24,12 @@ INNER JOIN lecturer_tbl ON schedule_tbl.LecturerID = lecturer_tbl.LecturerID
             $LecturerID = $rw['LecturerID'];
             $SubjectEN= $rw['SubjectEN'];
             $LecturerName = $rw['LecturerName'];
+            $Year = $rw['YearEN'];
+            $Semester = $rw['SemesterEN'];
             
             echo '
                     <option value='.$LecturerID.'>
-                               '.$SubjectEN.'/'.$LecturerName.'
+                               '.$SubjectEN.'/'.$LecturerName.'/'.$Year.'/'.$Semester.'
                     </option>
                 ';
         }

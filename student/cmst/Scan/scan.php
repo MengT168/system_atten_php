@@ -48,9 +48,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
-
-
-
+// Assuming $conn is already created and connected to the database
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $qrData = $_POST['barcode']; 
@@ -85,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $checkResult = $checkStmt->get_result();
     $checkRow = $checkResult->fetch_assoc();
 
-    if ($checkRow['count'] > 2) {
+    if ($checkRow['count'] >= 2) {
         $response = "You have already scanned twice today.";
         echo '
         <script>
@@ -96,12 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 icon: "error",
                 button: "Done",
             }).then(function() {
-                            window.location.href = "../index.php?tag=scan";
-                        });
+                window.location.href = "../index.php?tag=scan";
+            });
         });
         </script>
-    ';
-        // echo json_encode($response);
+        ';
         exit;
     }
 
@@ -114,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Insert data into attendance_tbl
     $insertSql = "INSERT INTO attendance_tbl (StudentStatusID, AttendanceDateIssue, SubjectID, Attended, AttendNote, Section, LecturerID, DateIssue)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $insertStmt = $conn->prepare($insertSql);
     $insertStmt->bind_param("isiissis", $StudentStatusID, $AttendanceDateIssue, $SubjectID, $Attended, $AttendNote, $Section, $LecturerID, $DateIssue);
 
@@ -128,14 +125,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 icon: "success",
                 button: "Done",
             }).then(function() {
-                            window.location.href = "../index.php?tag=scan";
-                        });
+                window.location.href = "../index.php?tag=scan";
+            });
         });
         </script>
-    ';
-    } 
-
-} 
-
-
+        ';
+    } else {
+        $response['message'] = "Failed to record attendance.";
+        echo json_encode($response);
+    }
+}
 ?>

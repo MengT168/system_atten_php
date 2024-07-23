@@ -1,3 +1,5 @@
+
+
 <?php
 session_start();
 $conn = mysqli_connect("localhost","root","","demo_db");
@@ -84,6 +86,20 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true && $_SESSION['idS'] && 
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+        .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+        .nav-link.active {
+            background-color: cyan;
+            color: #fff;
+        }
+    </style>
 
     <!-- =======================================================
   * Template Name: NiceAdmin
@@ -181,87 +197,39 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true && $_SESSION['idS'] && 
         <!-- End Dashboard Nav -->
 
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#components-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-menu-button-wide"></i><span>View Information</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="components-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=stu_info">
-                <i class="bi bi-circle"></i><span>Information</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <a class="nav-link" href="?tag=stu_info">
+        <i class="fa-solid fa-circle-info"></i><span>Information</span>
+        </a>
+      </li>
+
 
 
         <!-- VAN Sarath ForList Schedule -->
 
-
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Schedule</span><i class="bi bi-chevron-down ms-auto"></i>
+      <li class="nav-item">
+        <a class="nav-link" href="?tag=schedule">
+        <i class="fa-solid fa-calendar-days"></i><span>Schedule</span>
         </a>
-        <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="?tag=schedule">
-              <i class="bi bi-circle"></i><span>View Schedule</span>
-            </a>
-          </li>
-        
-        </ul>
       </li>
 
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav1" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Status</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link" href="?tag=status">
+        <i class="fa-solid fa-list"></i><span>Status</span>
         </a>
-        <ul id="tables-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="?tag=status">
-              <i class="bi bi-circle"></i><span>View Status</span>
-            </a>
-          </li>
-        </ul>
       </li>
 
 
         <!-- End Components Nav -->
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            data-bs-target="#forms-nav"
-            data-bs-toggle="collapse"
-            href="#"
-          >
-            <i class="bi bi-journal-text"></i><span>View Attendance</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul
-            id="forms-nav"
-            class="nav-content collapse"
-            data-bs-parent="#sidebar-nav"
-          >
-            <li>
-              <a href="?tag=stu_atten">
-                <i class="bi bi-circle"></i><span>Attendance</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <a class="nav-link" href="?tag=stu_atten">
+        <i class="fa-solid fa-clipboard-user"></i><span>Attendance</span>
+        </a>
+      </li>
 
 
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-n" data-bs-toggle="collapse" href="#">
           <i class="bi bi-layout-text-window-reverse"></i><span>Scan Attendance</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -272,6 +240,11 @@ if (isset($_SESSION['log'] ) && $_SESSION['log'] == true && $_SESSION['idS'] && 
             </a>
           </li>
         </ul>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" href="?tag=scan">
+        <i class="fa-solid fa-qrcode"></i><span>Scan Attendance</span>
+        </a>
       </li>
 
         
@@ -354,9 +327,32 @@ else{
 ?>
             </div>
 
+            <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Optionally, set the active class based on the current URL
+            const currentUrl = window.location.href;
+            navLinks.forEach(link => {
+                if (link.href === currentUrl) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 
   </body>
+  
+
 </html>
+
 
 
 
